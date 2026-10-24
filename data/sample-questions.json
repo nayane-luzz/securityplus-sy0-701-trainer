@@ -1,0 +1,424 @@
+[
+ {
+  "id": "EX1",
+  "ex": "A",
+  "n": 1,
+  "obj": "1.1 Security Controls",
+  "d": "1",
+  "q": "Uma empresa instala câmeras visíveis com placas de aviso na entrada do estacionamento. Qual tipo de controle as placas representam principalmente?",
+  "o": {
+   "A": "Deterrent (dissuasivo)",
+   "B": "Corrective (corretivo)",
+   "C": "Compensating (compensatório)",
+   "D": "Technical (técnico)"
+  },
+  "a": [
+   "A"
+  ],
+  "e": "Placas de aviso desencorajam a tentativa de intrusão sem impedi-la fisicamente: controle dissuasivo.",
+  "w": {
+   "B": "Corretivo atua depois do evento para reduzir o dano.",
+   "C": "Compensatório substitui um controle que não pode ser aplicado.",
+   "D": "Técnico é implementado por sistemas."
+  },
+  "en_q": ""
+ },
+ {
+  "id": "EX2",
+  "ex": "A",
+  "n": 2,
+  "obj": "1.2 Zero Trust",
+  "d": "1",
+  "q": "Em uma arquitetura zero trust, qual componente do plano de controle decide se uma requisição de acesso é concedida ou negada?",
+  "o": {
+   "A": "Policy enforcement point",
+   "B": "Policy engine",
+   "C": "Subject",
+   "D": "Implicit trust zone"
+  },
+  "a": [
+   "B"
+  ],
+  "e": "O policy engine fica no plano de controle e toma a decisão de acesso com base em políticas e sinais de contexto.",
+  "w": {
+   "A": "O PEP fica no plano de dados e apenas aplica a decisão.",
+   "C": "Sujeito é quem pede o acesso.",
+   "D": "Zero trust elimina a confiança implícita."
+  },
+  "en_q": ""
+ },
+ {
+  "id": "EX3",
+  "ex": "A",
+  "n": 3,
+  "obj": "1.4 Hashing and Digital Signatures",
+  "d": "1",
+  "q": "Um desenvolvedor quer garantir que dois usuários com a mesma senha tenham hashes armazenados diferentes. O que deve usar?",
+  "o": {
+   "A": "Key escrow",
+   "B": "Salting",
+   "C": "Steganography",
+   "D": "Tokenization"
+  },
+  "a": [
+   "B"
+  ],
+  "e": "O salt adiciona um valor aleatório antes do hash, gerando valores únicos mesmo para senhas iguais.",
+  "w": {
+   "A": "Guarda chaves com um terceiro.",
+   "C": "Esconde dados em outra mídia.",
+   "D": "Substitui dados sensíveis por um token."
+  },
+  "en_q": ""
+ },
+ {
+  "id": "EX4",
+  "ex": "A",
+  "n": 4,
+  "obj": "2.2 Phishing",
+  "d": "2",
+  "q": "Um funcionário recebe uma ligação de alguém que se diz do suporte de TI e pede o código de MFA recebido no celular. Qual ataque é esse?",
+  "o": {
+   "A": "Smishing",
+   "B": "Vishing",
+   "C": "Watering hole",
+   "D": "Typosquatting"
+  },
+  "a": [
+   "B"
+  ],
+  "e": "Engenharia social por voz/telefone é vishing.",
+  "w": {
+   "A": "Smishing é por SMS.",
+   "C": "Watering hole compromete um site que a vítima frequenta.",
+   "D": "Typosquatting usa domínios com erro de digitação."
+  },
+  "en_q": ""
+ },
+ {
+  "id": "EX5",
+  "ex": "A",
+  "n": 5,
+  "obj": "2.4 Password Attacks",
+  "d": "2",
+  "q": "Os logs mostram uma única senha comum sendo testada em centenas de contas diferentes, uma tentativa por conta. O que melhor descreve isso?",
+  "o": {
+   "A": "Brute force",
+   "B": "Password spraying",
+   "C": "Replay",
+   "D": "Credential stuffing com senha forte"
+  },
+  "a": [
+   "B"
+  ],
+  "e": "Password spraying testa poucas senhas comuns em muitas contas para evitar bloqueio por tentativas.",
+  "w": {
+   "A": "Força bruta testa muitas senhas contra a mesma conta.",
+   "C": "Replay reutiliza dados capturados.",
+   "D": "Não descreve o padrão de uma senha em muitas contas."
+  },
+  "en_q": ""
+ },
+ {
+  "id": "EX6",
+  "ex": "A",
+  "n": 6,
+  "obj": "2.5 Hardening Techniques",
+  "d": "2",
+  "q": "Qual ação reduz MAIS diretamente a superfície de ataque de um servidor recém-instalado?",
+  "o": {
+   "A": "Agendar backups diários",
+   "B": "Remover serviços e softwares não utilizados",
+   "C": "Instalar um certificado de dispositivo",
+   "D": "Ativar economia de energia"
+  },
+  "a": [
+   "B"
+  ],
+  "e": "Hardening reduz a superfície de ataque; remover o que não é usado elimina pontos de entrada.",
+  "w": {
+   "A": "Backup ajuda na recuperação, não reduz superfície.",
+   "C": "Certificado prova identidade, não reduz superfície.",
+   "D": "Não tem efeito de segurança."
+  },
+  "en_q": ""
+ },
+ {
+  "id": "EX7",
+  "ex": "A",
+  "n": 7,
+  "obj": "3.1 Cloud Infrastructures",
+  "d": "3",
+  "q": "Em IaaS, quem normalmente é responsável por aplicar patches no sistema operacional das VMs?",
+  "o": {
+   "A": "O provedor de nuvem",
+   "B": "O cliente",
+   "C": "O fabricante do hypervisor",
+   "D": "Ninguém, é automático"
+  },
+  "a": [
+   "B"
+  ],
+  "e": "No modelo de responsabilidade compartilhada de IaaS, o cliente gerencia o SO, as aplicações e os dados.",
+  "w": {
+   "A": "O provedor cuida da infraestrutura física e da virtualização.",
+   "C": "O hypervisor é responsabilidade do provedor.",
+   "D": "Não há patch automático garantido em IaaS."
+  },
+  "en_q": ""
+ },
+ {
+  "id": "EX8",
+  "ex": "A",
+  "n": 8,
+  "obj": "3.2 Network Appliances",
+  "d": "3",
+  "q": "Uma equipe precisa inspecionar requisições HTTP para bloquear SQL injection e XSS antes de chegarem à aplicação web. Qual solução usar?",
+  "o": {
+   "A": "WAF",
+   "B": "Load balancer",
+   "C": "Jump server",
+   "D": "VPN concentrator"
+  },
+  "a": [
+   "A"
+  ],
+  "e": "O WAF inspeciona a camada de aplicação web e bloqueia entradas maliciosas.",
+  "w": {
+   "B": "Distribui carga entre servidores.",
+   "C": "Dá acesso administrativo a redes protegidas.",
+   "D": "Termina túneis VPN."
+  },
+  "en_q": ""
+ },
+ {
+  "id": "EX9",
+  "ex": "A",
+  "n": 9,
+  "obj": "3.3 States of Data",
+  "d": "3",
+  "q": "Um processo de backup copia arquivos de um servidor para uma fita guardada em cofre. Em que estado o dado está na fita?",
+  "o": {
+   "A": "Em trânsito",
+   "B": "Em uso",
+   "C": "Em repouso",
+   "D": "Volátil"
+  },
+  "a": [
+   "C"
+  ],
+  "e": "Dado armazenado em mídia está em repouso (at rest).",
+  "w": {
+   "A": "Em trânsito é dado atravessando a rede.",
+   "B": "Em uso é dado na memória sendo processado.",
+   "D": "Volátil se refere à memória RAM."
+  },
+  "en_q": ""
+ },
+ {
+  "id": "EX10",
+  "ex": "A",
+  "n": 10,
+  "obj": "4.5 Firewalls",
+  "d": "4",
+  "q": "Um firewall tem apenas regras permitindo TCP/80 e TCP/443 para o servidor 10.0.0.5. Uma conexão RDP para esse servidor será:",
+  "o": {
+   "A": "Permitida pela regra de HTTPS",
+   "B": "Bloqueada pelo deny implícito",
+   "C": "Permitida porque o firewall é stateful",
+   "D": "Redirecionada para a porta 443"
+  },
+  "a": [
+   "B"
+  ],
+  "e": "RDP usa TCP/3389; sem regra que permita, o deny implícito ao final da política bloqueia.",
+  "w": {
+   "A": "443 é HTTPS, não RDP.",
+   "C": "Stateful só libera o retorno de conexões permitidas.",
+   "D": "Firewalls não redirecionam assim por padrão."
+  },
+  "en_q": ""
+ },
+ {
+  "id": "EX11",
+  "ex": "A",
+  "n": 11,
+  "obj": "4.8 Incident Response",
+  "d": "4",
+  "q": "Após isolar uma estação infectada da rede, qual é a próxima fase da resposta a incidentes?",
+  "o": {
+   "A": "Preparation",
+   "B": "Detection",
+   "C": "Eradication",
+   "D": "Lessons learned"
+  },
+  "a": [
+   "C"
+  ],
+  "e": "Ordem: preparação, detecção, análise, contenção, erradicação, recuperação, lições aprendidas. Após conter, vem a erradicação.",
+  "w": {
+   "A": "Ocorre antes do incidente.",
+   "B": "Já ocorreu.",
+   "D": "É a última fase."
+  },
+  "en_q": ""
+ },
+ {
+  "id": "EX12",
+  "ex": "A",
+  "n": 12,
+  "obj": "4.6 Multi-factor Authentication",
+  "d": "4",
+  "q": "Qual combinação representa autenticação multifator?",
+  "o": {
+   "A": "Senha e pergunta de segurança",
+   "B": "Senha e código de app autenticador",
+   "C": "PIN e senha",
+   "D": "Digital e reconhecimento facial"
+  },
+  "a": [
+   "B"
+  ],
+  "e": "Senha (algo que você sabe) + app autenticador (algo que você tem) são fatores diferentes.",
+  "w": {
+   "A": "Ambos são algo que você sabe.",
+   "C": "Ambos são algo que você sabe.",
+   "D": "Ambos são algo que você é."
+  },
+  "en_q": ""
+ },
+ {
+  "id": "EX13",
+  "ex": "A",
+  "n": 13,
+  "obj": "5.2 Risk Analysis",
+  "d": "5",
+  "q": "Um servidor custa R$ 20.000 para repor, e se espera perdê-lo 0,5 vez por ano. Qual é o ALE?",
+  "o": {
+   "A": "R$ 10.000",
+   "B": "R$ 20.000",
+   "C": "R$ 40.000",
+   "D": "R$ 0,5"
+  },
+  "a": [
+   "A"
+  ],
+  "e": "ALE = SLE × ARO = 20.000 × 0,5 = R$ 10.000.",
+  "w": {
+   "B": "Esse é o SLE.",
+   "C": "Multiplicou pelo inverso do ARO.",
+   "D": "Esse é o ARO."
+  },
+  "en_q": ""
+ },
+ {
+  "id": "EX14",
+  "ex": "A",
+  "n": 14,
+  "obj": "5.3 Agreement Types",
+  "d": "5",
+  "q": "Qual documento lista tarefas detalhadas, entregáveis e prazos de um projeto com um fornecedor?",
+  "o": {
+   "A": "SLA",
+   "B": "NDA",
+   "C": "SOW",
+   "D": "MOU"
+  },
+  "a": [
+   "C"
+  ],
+  "e": "O Statement of Work detalha escopo, tarefas e entregáveis, e serve para validar a conclusão do serviço.",
+  "w": {
+   "A": "Define níveis mínimos de serviço.",
+   "B": "Protege informações confidenciais.",
+   "D": "Carta de intenção informal."
+  },
+  "en_q": ""
+ },
+ {
+  "id": "EX15",
+  "ex": "A",
+  "n": 15,
+  "obj": "5.5 Penetration Tests",
+  "d": "5",
+  "q": "Um pentester recebe apenas a faixa de IPs públicos da empresa, sem outros detalhes. Qual é o tipo de ambiente do teste?",
+  "o": {
+   "A": "Known environment",
+   "B": "Partially known environment",
+   "C": "Unknown environment",
+   "D": "Passive reconnaissance"
+  },
+  "a": [
+   "B"
+  ],
+  "e": "Receber parte das informações (como os IPs) caracteriza um ambiente parcialmente conhecido.",
+  "w": {
+   "A": "Known environment dá detalhes completos.",
+   "C": "Unknown environment não dá nenhuma informação.",
+   "D": "É uma técnica de coleta, não um tipo de ambiente."
+  },
+  "en_q": ""
+ },
+ {
+  "id": "PX1",
+  "ex": "P",
+  "n": 1,
+  "pbq": "PX1",
+  "obj": "4.6 Multi-factor Authentication",
+  "d": "4",
+  "q": "Associe o fator de autenticação: digitar o PIN no caixa eletrônico.",
+  "o": {
+   "A": "Something you know",
+   "B": "Something you have",
+   "C": "Something you are",
+   "D": "Somewhere you are"
+  },
+  "a": [
+   "A"
+  ],
+  "e": "PIN é algo que você sabe.",
+  "w": {},
+  "en_q": ""
+ },
+ {
+  "id": "PX2",
+  "ex": "P",
+  "n": 2,
+  "pbq": "PX2",
+  "obj": "3.3 States of Data",
+  "d": "3",
+  "q": "Associe o estado do dado: uma planilha sendo recalculada na memória.",
+  "o": {
+   "A": "Em trânsito",
+   "B": "Em repouso",
+   "C": "Em uso"
+  },
+  "a": [
+   "C"
+  ],
+  "e": "Processamento em memória é dado em uso.",
+  "w": {},
+  "en_q": ""
+ },
+ {
+  "id": "PX3",
+  "ex": "P",
+  "n": 3,
+  "pbq": "PX3",
+  "obj": "4.8 Incident Response",
+  "d": "4",
+  "q": "Qual fase vem logo depois de Containment?",
+  "o": {
+   "A": "Analysis",
+   "B": "Eradication",
+   "C": "Recovery",
+   "D": "Lessons learned"
+  },
+  "a": [
+   "B"
+  ],
+  "e": "Depois de conter, erradica-se a causa.",
+  "w": {},
+  "en_q": ""
+ }
+]

@@ -1,0 +1,649 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"></head><body>
+<title>Security+ SY0-701 Trainer</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@112,600;112,800&family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: single study column (max 860px) — sticky exam bar on top, screens swap in place: Início → Prova → Resultado → Flashcards */
+:root{
+  --bg:#eef1f5; --surface:#ffffff; --surface-2:#f6f8fb; --line:#d6dce6;
+  --ink:#121b2b; --ink-2:#4a5568; --ink-3:#7a8597;
+  --accent:#2343c4; --accent-ink:#ffffff; --accent-soft:#e3e8fb;
+  --ok:#137a4b; --ok-soft:#dff3e8; --bad:#c2332b; --bad-soft:#fbe4e2; --warn:#a86400; --warn-soft:#fbefd9;
+  --goal:#7a3cc9;
+  --f-display:"Archivo","Arial Narrow",system-ui,sans-serif;
+  --f-body:"Atkinson Hyperlegible",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --f-mono:"JetBrains Mono",ui-monospace,"SFMono-Regular",Menlo,monospace;
+  --r:10px;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0d1320; --surface:#151d2e; --surface-2:#1b2538; --line:#2a3650;
+  --ink:#e8edf6; --ink-2:#aab4c6; --ink-3:#7c879c;
+  --accent:#7d97ff; --accent-ink:#0b1020; --accent-soft:#232f55;
+  --ok:#4fd08f; --ok-soft:#163327; --bad:#ff7a70; --bad-soft:#3a1d1d; --warn:#f0b04a; --warn-soft:#3a2c13;
+  --goal:#c29bff; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0d1320; --surface:#151d2e; --surface-2:#1b2538; --line:#2a3650;
+  --ink:#e8edf6; --ink-2:#aab4c6; --ink-3:#7c879c;
+  --accent:#7d97ff; --accent-ink:#0b1020; --accent-soft:#232f55;
+  --ok:#4fd08f; --ok-soft:#163327; --bad:#ff7a70; --bad-soft:#3a1d1d; --warn:#f0b04a; --warn-soft:#3a2c13;
+  --goal:#c29bff; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:16px;line-height:1.55;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--surface)}
+.wrap{max-width:860px;margin:0 auto;padding-block:20px 64px;display:flex;flex-direction:column;gap:20px}
+h1,h2,h3{font-family:var(--f-display);font-stretch:112%;text-wrap:balance;margin:0;line-height:1.15}
+h1{font-size:clamp(26px,5vw,36px);font-weight:800;letter-spacing:-.01em}
+h2{font-size:21px;font-weight:800}
+h3{font-size:16px;font-weight:600}
+p{margin:0}
+.mono{font-family:var(--f-mono);font-variant-numeric:tabular-nums}
+.eyebrow{font-family:var(--f-mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3)}
+.muted{color:var(--ink-2)}
+.small{font-size:14px}
+button,select{font:inherit;color:inherit}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:0 18px;border-radius:8px;border:1px solid var(--line);background:var(--surface);cursor:pointer;font-weight:700}
+.btn:hover{border-color:var(--accent)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.btn.primary:hover{filter:brightness(1.08)}
+.btn.danger{color:var(--bad);border-color:color-mix(in srgb,var(--bad) 45%,var(--line))}
+.btn.ghost{background:transparent}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:20px;display:flex;flex-direction:column;gap:14px;min-width:0}
+
+/* top bar */
+.topbar{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--surface);border-bottom:1px solid var(--line);
+  margin-left:calc(-1 * max(16px,env(safe-area-inset-left,0px)));margin-right:calc(-1 * max(16px,env(safe-area-inset-right,0px)))}
+.topbar-in{max-width:860px;margin:0 auto;padding:10px max(16px,env(safe-area-inset-right,0px)) 10px max(16px,env(safe-area-inset-left,0px));display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.brand{font-family:var(--f-display);font-weight:800;font-stretch:112%;font-size:15px;display:flex;align-items:center;gap:8px;margin-right:auto}
+.brand .chip{font-family:var(--f-mono);font-size:11px;font-weight:600;background:var(--accent-soft);color:var(--accent);padding:2px 7px;border-radius:4px}
+.tabs{display:flex;gap:4px}
+.tab{border:0;background:transparent;padding:8px 12px;border-radius:6px;cursor:pointer;color:var(--ink-2);font-weight:700;font-size:14px}
+.tab[aria-current="true"]{background:var(--accent-soft);color:var(--accent)}
+
+/* home */
+.hero{display:grid;grid-template-columns:1fr auto;gap:20px;align-items:end}
+@media (max-width:640px){.hero{grid-template-columns:1fr}}
+.goalbox{border:1px dashed var(--goal);border-radius:var(--r);padding:12px 16px;min-width:190px}
+.goalbox .big{font-family:var(--f-display);font-weight:800;font-size:30px;color:var(--goal);line-height:1}
+.opts{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px}
+.field{display:flex;flex-direction:column;gap:6px;min-width:0}
+.field label{font-size:13px;font-weight:700;color:var(--ink-2)}
+.seg{display:flex;border:1px solid var(--line);border-radius:8px;overflow:hidden;background:var(--surface-2)}
+.seg{flex-wrap:wrap}.seg button{flex:1 1 auto;border:0;background:transparent;padding:10px 6px;cursor:pointer;font-weight:700;font-size:14px;color:var(--ink-2);min-height:42px}
+.seg button[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink)}
+select{min-height:42px;border:1px solid var(--line);border-radius:8px;background:var(--surface-2);padding:0 10px}
+.check{display:flex;gap:8px;align-items:center;font-size:14px;color:var(--ink-2);cursor:pointer}
+.check input{width:18px;height:18px;accent-color:var(--accent)}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+@media (max-width:640px){.stats{grid-template-columns:repeat(2,1fr)}}
+.stat{background:var(--surface-2);border-radius:8px;padding:12px}
+.stat .v{font-family:var(--f-display);font-weight:800;font-size:24px;font-variant-numeric:tabular-nums}
+.stat .k{font-size:12px;color:var(--ink-3)}
+
+/* scale gauge 100-900 */
+.gauge{position:relative;height:56px;margin-top:6px}
+.gauge .track{position:absolute;left:0;right:0;top:22px;height:10px;border-radius:5px;background:linear-gradient(90deg,var(--bad-soft) 0 81.25%,var(--warn-soft) 81.25% 87.5%,var(--ok-soft) 87.5% 100%);border:1px solid var(--line)}
+.gauge .fill{position:absolute;left:0;top:22px;height:10px;border-radius:5px;background:var(--accent);transition:width .6s}
+.gauge .mk{position:absolute;top:14px;width:2px;height:26px;background:var(--ink-2)}
+.gauge .mk.goal{background:var(--goal)}
+.gauge .lbl{position:absolute;top:42px;font-family:var(--f-mono);font-size:11px;color:var(--ink-3);transform:translateX(-50%);white-space:nowrap}
+.gauge .lbl.goal{color:var(--goal);font-weight:600}
+.gauge .you{position:absolute;top:0;font-family:var(--f-mono);font-size:12px;font-weight:600;transform:translateX(-50%);white-space:nowrap;color:var(--accent)}
+.spark{width:100%;height:70px;display:block}
+
+/* quiz */
+.qhead{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.progress{height:6px;background:var(--surface-2);border-radius:3px;overflow:hidden;border:1px solid var(--line)}
+.progress>div{height:100%;background:var(--accent);transition:width .25s}
+.timer{font-family:var(--f-mono);font-weight:600;font-size:15px;padding:4px 10px;border-radius:6px;background:var(--surface-2)}
+.timer.low{color:var(--bad);background:var(--bad-soft)}
+.qtext{font-size:18px;line-height:1.6}
+.qtag{display:flex;gap:8px;flex-wrap:wrap}
+.pill{font-family:var(--f-mono);font-size:11.5px;padding:3px 8px;border-radius:999px;background:var(--surface-2);color:var(--ink-2);border:1px solid var(--line);white-space:nowrap}
+.pill.d1{border-color:#5b7cfa66}.pill.d2{border-color:#e0605566}.pill.d3{border-color:#2aa37a66}.pill.d4{border-color:#d98c1c66}.pill.d5{border-color:#9b5de566}
+.selmany{font-size:13px;font-weight:700;color:var(--warn);background:var(--warn-soft);padding:3px 8px;border-radius:6px}
+.choices{display:flex;flex-direction:column;gap:8px}
+.choice{display:grid;grid-template-columns:30px 1fr;gap:10px;align-items:start;text-align:left;width:100%;padding:12px 14px;border:1.5px solid var(--line);border-radius:8px;background:var(--surface);cursor:pointer;line-height:1.45}
+.choice:hover:not([disabled]){border-color:var(--accent)}
+.choice .L{font-family:var(--f-mono);font-weight:600;width:26px;height:26px;border-radius:6px;display:grid;place-items:center;background:var(--surface-2);font-size:13px}
+.choice[aria-pressed="true"]{border-color:var(--accent);background:var(--accent-soft)}
+.choice[aria-pressed="true"] .L{background:var(--accent);color:var(--accent-ink)}
+.choice.right{border-color:var(--ok);background:var(--ok-soft)}
+.choice.right .L{background:var(--ok);color:var(--surface)}
+.choice.wrong{border-color:var(--bad);background:var(--bad-soft)}
+.choice.wrong .L{background:var(--bad);color:var(--surface)}
+.choice[disabled]{cursor:default}
+.feedback{border-radius:8px;padding:14px 16px;display:flex;flex-direction:column;gap:8px;border:1px solid var(--line);background:var(--surface-2)}
+.feedback.ok{border-color:var(--ok)}.feedback.bad{border-color:var(--bad)}
+.feedback .verdict{font-weight:700}
+.feedback.ok .verdict{color:var(--ok)}.feedback.bad .verdict{color:var(--bad)}
+.why{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:6px;font-size:14.5px;color:var(--ink-2)}
+.why b{font-family:var(--f-mono);color:var(--ink)}
+.en{font-size:14px;color:var(--ink-2);border-left:3px solid var(--line);padding-left:12px;font-style:italic}
+.qnav{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.grid-nav{display:flex;flex-wrap:wrap;gap:4px}
+.grid-nav button{width:34px;height:30px;border-radius:5px;border:1px solid var(--line);background:var(--surface);font-family:var(--f-mono);font-size:11px;cursor:pointer;color:var(--ink-2)}
+.grid-nav button.ans{background:var(--accent-soft);color:var(--accent);border-color:transparent}
+.grid-nav button.flag{box-shadow:inset 0 -3px 0 var(--warn)}
+.grid-nav button.cur{outline:2px solid var(--accent)}
+.grid-nav button.r{background:var(--ok-soft);color:var(--ok)}
+.grid-nav button.w{background:var(--bad-soft);color:var(--bad)}
+
+/* results */
+.scorehead{display:grid;grid-template-columns:auto 1fr;gap:24px;align-items:center}
+@media (max-width:640px){.scorehead{grid-template-columns:1fr}}
+.donut{width:150px;height:150px}
+.verdict-tag{display:inline-flex;font-weight:700;font-size:13px;padding:4px 10px;border-radius:6px}
+.verdict-tag.ok{background:var(--ok-soft);color:var(--ok)}.verdict-tag.warn{background:var(--warn-soft);color:var(--warn)}.verdict-tag.bad{background:var(--bad-soft);color:var(--bad)}
+.kv{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+@media (max-width:520px){.kv{grid-template-columns:1fr 1fr}}
+.dom{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(0,2fr) 64px;gap:12px;align-items:center;font-size:14px}
+@media (max-width:560px){.dom{grid-template-columns:1fr 64px}.dom .bar{grid-column:1/-1;order:3}}
+.bar{height:12px;border-radius:6px;background:var(--surface-2);position:relative;overflow:hidden;border:1px solid var(--line)}
+.bar>i{position:absolute;inset:0 auto 0 0;border-radius:6px}
+.bar .goalline{position:absolute;top:-2px;bottom:-2px;left:87.5%;width:2px;background:var(--goal)}
+.review-list{display:flex;flex-direction:column;gap:10px}
+.topic{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:6px 12px;padding:12px 14px;border:1px solid var(--line);border-radius:8px;background:var(--surface-2)}
+.topic .sev{font-family:var(--f-mono);font-size:12px;font-weight:600;padding:2px 8px;border-radius:4px;align-self:start}
+.sev.hi{background:var(--bad-soft);color:var(--bad)}.sev.md{background:var(--warn-soft);color:var(--warn)}.sev.lo{background:var(--surface);color:var(--ink-2);border:1px solid var(--line)}
+.topic .tip{grid-column:1/-1;font-size:14px;color:var(--ink-2)}
+.topic .ids{grid-column:1/-1;display:flex;gap:6px;flex-wrap:wrap}
+.linkbtn{border:0;background:none;padding:0;color:var(--accent);font-family:var(--f-mono);font-size:12px;cursor:pointer;text-decoration:underline}
+details.wq{border:1px solid var(--line);border-radius:8px;background:var(--surface)}
+details.wq summary{cursor:pointer;padding:12px 14px;display:flex;gap:10px;align-items:baseline;list-style:none}
+details.wq summary::-webkit-details-marker{display:none}
+details.wq summary .mono{color:var(--bad);font-size:13px;flex:none}
+details.wq .body{padding:0 14px 14px;display:flex;flex-direction:column;gap:10px}
+.ansline{font-size:14.5px}
+.ansline .you{color:var(--bad)}.ansline .ok{color:var(--ok);font-weight:700}
+
+/* flashcards */
+.fc-stage{perspective:1400px}
+.card{position:relative;min-height:340px;transform-style:preserve-3d;transition:transform .5s;cursor:pointer}
+.card.flip{transform:rotateY(180deg)}
+.face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:14px;border:1px solid var(--line);background:var(--surface);padding:24px;display:flex;flex-direction:column;gap:12px;overflow:auto}
+.face.back{transform:rotateY(180deg);background:var(--surface-2)}
+.face .corner{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap}
+.face .prompt{font-size:18px;line-height:1.55}
+.face .answer{font-family:var(--f-display);font-weight:800;font-size:20px;color:var(--ok)}
+.face .hint{margin-top:auto;font-size:13px;color:var(--ink-3)}
+.fc-controls{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.empty{text-align:center;padding:36px 16px;display:flex;flex-direction:column;gap:12px;align-items:center}
+
+/* confirm sheet */
+.confirm{border:1.5px solid var(--bad);background:var(--bad-soft);border-radius:8px;padding:14px;display:flex;flex-direction:column;gap:10px}
+.toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:10px 16px;border-radius:8px;font-weight:700;font-size:14px;z-index:20}
+.note{font-size:13px;color:var(--ink-3)}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+
+<header class="topbar"><div class="topbar-in">
+  <div class="brand">Security+ <span class="chip">SY0-701</span></div>
+  <nav class="tabs" aria-label="Seções">
+    <button class="tab" data-go="home" id="tab-home">Início</button>
+    <button class="tab" data-go="quiz" id="tab-quiz">Prova</button>
+    <button class="tab" data-go="result" id="tab-result">Resultado</button>
+    <button class="tab" data-go="cards" id="tab-cards">Flashcards</button>
+  </nav>
+</div></header>
+
+<main class="wrap" id="app"></main>
+
+<script id="qdata" type="application/json">[{"id":"EX1","ex":"A","n":1,"obj":"1.1 Security Controls","d":"1","q":"Uma empresa instala câmeras visíveis com placas de aviso na entrada do estacionamento. Qual tipo de controle as placas representam principalmente?","o":{"A":"Deterrent (dissuasivo)","B":"Corrective (corretivo)","C":"Compensating (compensatório)","D":"Technical (técnico)"},"a":["A"],"e":"Placas de aviso desencorajam a tentativa de intrusão sem impedi-la fisicamente: controle dissuasivo.","w":{"B":"Corretivo atua depois do evento para reduzir o dano.","C":"Compensatório substitui um controle que não pode ser aplicado.","D":"Técnico é implementado por sistemas."},"en_q":""},{"id":"EX2","ex":"A","n":2,"obj":"1.2 Zero Trust","d":"1","q":"Em uma arquitetura zero trust, qual componente do plano de controle decide se uma requisição de acesso é concedida ou negada?","o":{"A":"Policy enforcement point","B":"Policy engine","C":"Subject","D":"Implicit trust zone"},"a":["B"],"e":"O policy engine fica no plano de controle e toma a decisão de acesso com base em políticas e sinais de contexto.","w":{"A":"O PEP fica no plano de dados e apenas aplica a decisão.","C":"Sujeito é quem pede o acesso.","D":"Zero trust elimina a confiança implícita."},"en_q":""},{"id":"EX3","ex":"A","n":3,"obj":"1.4 Hashing and Digital Signatures","d":"1","q":"Um desenvolvedor quer garantir que dois usuários com a mesma senha tenham hashes armazenados diferentes. O que deve usar?","o":{"A":"Key escrow","B":"Salting","C":"Steganography","D":"Tokenization"},"a":["B"],"e":"O salt adiciona um valor aleatório antes do hash, gerando valores únicos mesmo para senhas iguais.","w":{"A":"Guarda chaves com um terceiro.","C":"Esconde dados em outra mídia.","D":"Substitui dados sensíveis por um token."},"en_q":""},{"id":"EX4","ex":"A","n":4,"obj":"2.2 Phishing","d":"2","q":"Um funcionário recebe uma ligação de alguém que se diz do suporte de TI e pede o código de MFA recebido no celular. Qual ataque é esse?","o":{"A":"Smishing","B":"Vishing","C":"Watering hole","D":"Typosquatting"},"a":["B"],"e":"Engenharia social por voz/telefone é vishing.","w":{"A":"Smishing é por SMS.","C":"Watering hole compromete um site que a vítima frequenta.","D":"Typosquatting usa domínios com erro de digitação."},"en_q":""},{"id":"EX5","ex":"A","n":5,"obj":"2.4 Password Attacks","d":"2","q":"Os logs mostram uma única senha comum sendo testada em centenas de contas diferentes, uma tentativa por conta. O que melhor descreve isso?","o":{"A":"Brute force","B":"Password spraying","C":"Replay","D":"Credential stuffing com senha forte"},"a":["B"],"e":"Password spraying testa poucas senhas comuns em muitas contas para evitar bloqueio por tentativas.","w":{"A":"Força bruta testa muitas senhas contra a mesma conta.","C":"Replay reutiliza dados capturados.","D":"Não descreve o padrão de uma senha em muitas contas."},"en_q":""},{"id":"EX6","ex":"A","n":6,"obj":"2.5 Hardening Techniques","d":"2","q":"Qual ação reduz MAIS diretamente a superfície de ataque de um servidor recém-instalado?","o":{"A":"Agendar backups diários","B":"Remover serviços e softwares não utilizados","C":"Instalar um certificado de dispositivo","D":"Ativar economia de energia"},"a":["B"],"e":"Hardening reduz a superfície de ataque; remover o que não é usado elimina pontos de entrada.","w":{"A":"Backup ajuda na recuperação, não reduz superfície.","C":"Certificado prova identidade, não reduz superfície.","D":"Não tem efeito de segurança."},"en_q":""},{"id":"EX7","ex":"A","n":7,"obj":"3.1 Cloud Infrastructures","d":"3","q":"Em IaaS, quem normalmente é responsável por aplicar patches no sistema operacional das VMs?","o":{"A":"O provedor de nuvem","B":"O cliente","C":"O fabricante do hypervisor","D":"Ninguém, é automático"},"a":["B"],"e":"No modelo de responsabilidade compartilhada de IaaS, o cliente gerencia o SO, as aplicações e os dados.","w":{"A":"O provedor cuida da infraestrutura física e da virtualização.","C":"O hypervisor é responsabilidade do provedor.","D":"Não há patch automático garantido em IaaS."},"en_q":""},{"id":"EX8","ex":"A","n":8,"obj":"3.2 Network Appliances","d":"3","q":"Uma equipe precisa inspecionar requisições HTTP para bloquear SQL injection e XSS antes de chegarem à aplicação web. Qual solução usar?","o":{"A":"WAF","B":"Load balancer","C":"Jump server","D":"VPN concentrator"},"a":["A"],"e":"O WAF inspeciona a camada de aplicação web e bloqueia entradas maliciosas.","w":{"B":"Distribui carga entre servidores.","C":"Dá acesso administrativo a redes protegidas.","D":"Termina túneis VPN."},"en_q":""},{"id":"EX9","ex":"A","n":9,"obj":"3.3 States of Data","d":"3","q":"Um processo de backup copia arquivos de um servidor para uma fita guardada em cofre. Em que estado o dado está na fita?","o":{"A":"Em trânsito","B":"Em uso","C":"Em repouso","D":"Volátil"},"a":["C"],"e":"Dado armazenado em mídia está em repouso (at rest).","w":{"A":"Em trânsito é dado atravessando a rede.","B":"Em uso é dado na memória sendo processado.","D":"Volátil se refere à memória RAM."},"en_q":""},{"id":"EX10","ex":"A","n":10,"obj":"4.5 Firewalls","d":"4","q":"Um firewall tem apenas regras permitindo TCP/80 e TCP/443 para o servidor 10.0.0.5. Uma conexão RDP para esse servidor será:","o":{"A":"Permitida pela regra de HTTPS","B":"Bloqueada pelo deny implícito","C":"Permitida porque o firewall é stateful","D":"Redirecionada para a porta 443"},"a":["B"],"e":"RDP usa TCP/3389; sem regra que permita, o deny implícito ao final da política bloqueia.","w":{"A":"443 é HTTPS, não RDP.","C":"Stateful só libera o retorno de conexões permitidas.","D":"Firewalls não redirecionam assim por padrão."},"en_q":""},{"id":"EX11","ex":"A","n":11,"obj":"4.8 Incident Response","d":"4","q":"Após isolar uma estação infectada da rede, qual é a próxima fase da resposta a incidentes?","o":{"A":"Preparation","B":"Detection","C":"Eradication","D":"Lessons learned"},"a":["C"],"e":"Ordem: preparação, detecção, análise, contenção, erradicação, recuperação, lições aprendidas. Após conter, vem a erradicação.","w":{"A":"Ocorre antes do incidente.","B":"Já ocorreu.","D":"É a última fase."},"en_q":""},{"id":"EX12","ex":"A","n":12,"obj":"4.6 Multi-factor Authentication","d":"4","q":"Qual combinação representa autenticação multifator?","o":{"A":"Senha e pergunta de segurança","B":"Senha e código de app autenticador","C":"PIN e senha","D":"Digital e reconhecimento facial"},"a":["B"],"e":"Senha (algo que você sabe) + app autenticador (algo que você tem) são fatores diferentes.","w":{"A":"Ambos são algo que você sabe.","C":"Ambos são algo que você sabe.","D":"Ambos são algo que você é."},"en_q":""},{"id":"EX13","ex":"A","n":13,"obj":"5.2 Risk Analysis","d":"5","q":"Um servidor custa R$ 20.000 para repor, e se espera perdê-lo 0,5 vez por ano. Qual é o ALE?","o":{"A":"R$ 10.000","B":"R$ 20.000","C":"R$ 40.000","D":"R$ 0,5"},"a":["A"],"e":"ALE = SLE × ARO = 20.000 × 0,5 = R$ 10.000.","w":{"B":"Esse é o SLE.","C":"Multiplicou pelo inverso do ARO.","D":"Esse é o ARO."},"en_q":""},{"id":"EX14","ex":"A","n":14,"obj":"5.3 Agreement Types","d":"5","q":"Qual documento lista tarefas detalhadas, entregáveis e prazos de um projeto com um fornecedor?","o":{"A":"SLA","B":"NDA","C":"SOW","D":"MOU"},"a":["C"],"e":"O Statement of Work detalha escopo, tarefas e entregáveis, e serve para validar a conclusão do serviço.","w":{"A":"Define níveis mínimos de serviço.","B":"Protege informações confidenciais.","D":"Carta de intenção informal."},"en_q":""},{"id":"EX15","ex":"A","n":15,"obj":"5.5 Penetration Tests","d":"5","q":"Um pentester recebe apenas a faixa de IPs públicos da empresa, sem outros detalhes. Qual é o tipo de ambiente do teste?","o":{"A":"Known environment","B":"Partially known environment","C":"Unknown environment","D":"Passive reconnaissance"},"a":["B"],"e":"Receber parte das informações (como os IPs) caracteriza um ambiente parcialmente conhecido.","w":{"A":"Known environment dá detalhes completos.","C":"Unknown environment não dá nenhuma informação.","D":"É uma técnica de coleta, não um tipo de ambiente."},"en_q":""},{"id":"PX1","ex":"P","n":1,"pbq":"PX1","obj":"4.6 Multi-factor Authentication","d":"4","q":"Associe o fator de autenticação: digitar o PIN no caixa eletrônico.","o":{"A":"Something you know","B":"Something you have","C":"Something you are","D":"Somewhere you are"},"a":["A"],"e":"PIN é algo que você sabe.","w":{},"en_q":""},{"id":"PX2","ex":"P","n":2,"pbq":"PX2","obj":"3.3 States of Data","d":"3","q":"Associe o estado do dado: uma planilha sendo recalculada na memória.","o":{"A":"Em trânsito","B":"Em repouso","C":"Em uso"},"a":["C"],"e":"Processamento em memória é dado em uso.","w":{},"en_q":""},{"id":"PX3","ex":"P","n":3,"pbq":"PX3","obj":"4.8 Incident Response","d":"4","q":"Qual fase vem logo depois de Containment?","o":{"A":"Analysis","B":"Eradication","C":"Recovery","D":"Lessons learned"},"a":["B"],"e":"Depois de conter, erradica-se a causa.","w":{},"en_q":""}]</script>
+<script>
+(function(){
+const SAMPLE = JSON.parse(document.getElementById('qdata').textContent);
+const BANK_KEY='secplus701-bank';
+let bankName='Exemplo (questões originais)';
+function validBank(a){return Array.isArray(a)&&a.length&&a.every(q=>q&&q.id&&q.q&&q.o&&Array.isArray(q.a)&&q.obj&&q.d)}
+let Q=SAMPLE;
+try{const raw=localStorage.getItem(BANK_KEY);if(raw){const b=JSON.parse(raw);if(validBank(b.items)){Q=b.items;bankName=b.name||'Banco importado'}}}catch(e){}
+const BY = Object.fromEntries(Q.map(q=>[q.id,q]));
+function esc0(s){return String(s)}
+const DOM = {
+  '1':{n:'Conceitos Gerais de Segurança',w:.12},
+  '2':{n:'Ameaças, Vulnerabilidades e Mitigações',w:.22},
+  '3':{n:'Arquitetura de Segurança',w:.18},
+  '4':{n:'Operações de Segurança',w:.28},
+  '5':{n:'Gestão e Supervisão do Programa',w:.20}
+};
+const PASS=750, GOAL=800;
+const KEY='secplus701-v1';
+const app=document.getElementById('app');
+
+/* ---------- storage (per-browser convenience) ---------- */
+function blank(){return {history:[],missed:{},mastered:{},current:null,lastResult:null}}
+let S=blank();
+try{const raw=localStorage.getItem(KEY); if(raw){S=Object.assign(blank(),JSON.parse(raw));}}catch(e){}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(S));}catch(e){}}
+
+/* ---------- helpers ---------- */
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+const pct=(a,b)=>b?Math.round(a/b*1000)/10:0;
+function toast(t){const d=document.createElement('div');d.className='toast';d.textContent=t;document.body.appendChild(d);setTimeout(()=>d.remove(),2200)}
+function isRight(q,sel){if(!sel||!sel.length)return false;const a=[...q.a].sort().join(),s=[...sel].sort().join();return a===s}
+function nSelect(q){return q.a.length}
+const objCode=o=>o.split(' ')[0];
+const objName=o=>o.slice(o.indexOf(' ')+1);
+function scaled(p){return Math.round(100+800*p)} // 0..1 -> 100..900
+function weightedPct(byDom){let num=0,den=0;for(const d in DOM){const v=byDom[d];if(v&&v.t){num+=DOM[d].w*(v.c/v.t);den+=DOM[d].w}}return den?num/den:0}
+function verdictFor(score){if(score>=GOAL)return['ok','Meta atingida (800+)'];if(score>=PASS)return['warn','Aprovada, abaixo da meta'];return['bad','Abaixo da aprovação (750)']}
+
+/* ---------- routing ---------- */
+let view='home', timerInt=null;
+function go(v){view=v;render();window.scrollTo({top:0});}
+document.querySelectorAll('.tab').forEach(b=>b.addEventListener('click',()=>go(b.dataset.go)));
+function setTabs(){document.querySelectorAll('.tab').forEach(b=>b.setAttribute('aria-current',b.dataset.go===view?'true':'false'))}
+
+/* ---------- config ---------- */
+let cfg={exam:'ALL',count:'45',mode:'estudo',shuffle:true,onlyMissed:false,timed:true};
+try{const c=JSON.parse(localStorage.getItem(KEY+'-cfg')||'null');if(c)cfg=Object.assign(cfg,c)}catch(e){}
+function saveCfg(){try{localStorage.setItem(KEY+'-cfg',JSON.stringify(cfg))}catch(e){}}
+
+function pool(){let p=Q.filter(q=>cfg.exam==='ALL'?q.ex!=='P':q.ex===cfg.exam);if(cfg.onlyMissed)p=p.filter(q=>S.missed[q.id]);return p}
+
+/* ---------- HOME ---------- */
+function renderHome(){
+  const h=S.history, last=h[h.length-1], best=h.reduce((m,x)=>Math.max(m,x.score),0);
+  const missedN=Object.keys(S.missed).length;
+  const p=pool();
+  const totalAns=h.reduce((s,x)=>s+x.n,0), totalOk=h.reduce((s,x)=>s+x.c,0);
+  app.innerHTML=`
+  <section class="hero">
+    <div style="display:flex;flex-direction:column;gap:8px;min-width:0">
+      <span class="eyebrow">CompTIA Security+ · ${esc(bankName)} · ${Q.filter(q=>q.ex!=='P').length} questões + ${Q.filter(q=>q.ex==='P').length} práticas</span>
+      <h1>Treino para passar com 800+</h1>
+      <p class="muted">Responda, veja seu percentual de acerto e erro, descubra o que revisar por objetivo do exame e estude os erros em flashcards.</p>
+    </div>
+    <div class="goalbox"><div class="eyebrow" style="color:var(--goal)">Sua meta</div><div class="big mono">${GOAL}</div><div class="small muted">escala 100–900 · aprovação ${PASS}</div></div>
+  </section>
+
+  ${last?`<section class="panel">
+    <div class="row" style="justify-content:space-between"><h2>Seu progresso</h2><span class="note">${h.length} tentativa(s)</span></div>
+    <div class="stats">
+      <div class="stat"><div class="v mono">${last.score}</div><div class="k">Última nota estimada</div></div>
+      <div class="stat"><div class="v mono">${best}</div><div class="k">Melhor nota</div></div>
+      <div class="stat"><div class="v mono">${pct(totalOk,totalAns)}%</div><div class="k">Acerto acumulado</div></div>
+      <div class="stat"><div class="v mono">${missedN}</div><div class="k">Questões no banco de erros</div></div>
+    </div>
+    ${gauge(last.score)}
+    ${h.length>1?spark(h):''}
+  </section>`:''}
+
+  ${S.current?`<section class="panel" style="border-color:var(--accent)">
+    <div class="row" style="justify-content:space-between"><div><h3>Prova em andamento</h3><p class="small muted">${Object.keys(S.current.ans).length} de ${S.current.ids.length} respondidas · modo ${S.current.mode==='simulado'?'simulado':'estudo'}</p></div>
+    <div class="row"><button class="btn primary" id="resume">Continuar</button><button class="btn ghost" id="discard">Descartar</button></div></div>
+  </section>`:''}
+
+  <section class="panel">
+    <h2>Nova prova</h2>
+    <div class="opts">
+      <div class="field"><label>Simulado</label>
+        <div class="seg" role="group" aria-label="Simulado">${['ALL',...[...new Set(Q.map(q=>q.ex))].sort()].map(x=>`<button data-k="exam" data-v="${x}" aria-pressed="${cfg.exam===x}">${x==='ALL'?'Todos':x==='P'?'Práticas':x}</button>`).join('')}</div></div>
+      <div class="field"><label for="count">Quantidade de questões</label>
+        <select id="count">${[['10','10 (rápido)'],['25','25'],['45','45'],['90','90 (prova real)'],['all','Todas do filtro']].map(([v,t])=>`<option value="${v}" ${cfg.count===v?'selected':''}>${t}</option>`).join('')}</select></div>
+      <div class="field"><label>Modo</label>
+        <div class="seg" role="group" aria-label="Modo"><button data-k="mode" data-v="estudo" aria-pressed="${cfg.mode==='estudo'}">Estudo</button><button data-k="mode" data-v="simulado" aria-pressed="${cfg.mode==='simulado'}">Simulado</button></div></div>
+    </div>
+    ${cfg.exam==='P'?'<p class="small muted">Práticas: questões de arrastar e associar (PBQ) adaptadas em itens de múltipla escolha. "Todos" não inclui as práticas.</p>':''}
+    <p class="small muted" id="modehelp">${cfg.mode==='estudo'?'Estudo: a correção e a explicação aparecem logo após cada resposta.':'Simulado: sem correção durante a prova, com cronômetro de 1 minuto por questão (como no exame real: 90 questões em 90 minutos).'}</p>
+    <div class="row" style="gap:18px">
+      <label class="check"><input type="checkbox" id="shuf" ${cfg.shuffle?'checked':''}> Embaralhar questões</label>
+      <label class="check"><input type="checkbox" id="onlym" ${cfg.onlyMissed?'checked':''} ${missedN?'':'disabled'}> Só questões que já errei (${missedN})</label>
+    </div>
+    <div class="row" style="justify-content:space-between">
+      <span class="small muted mono">${p.length} questões disponíveis neste filtro</span>
+      <button class="btn primary" id="start" ${p.length?'':'disabled'}>Começar prova</button>
+    </div>
+  </section>
+
+  <section class="panel">
+    <div class="row" style="justify-content:space-between"><h2>Banco de questões</h2><span class="note">${esc(bankName)}</span></div>
+    <p class="small muted">O app vem com questões de exemplo. Você pode importar seu próprio banco em JSON (formato descrito no README). Ele fica salvo só neste navegador e não é enviado a lugar nenhum.</p>
+    <div class="row"><label class="btn" for="bankfile">Importar banco (.json)</label><input type="file" id="bankfile" accept="application/json,.json" hidden>
+    ${bankName.startsWith('Exemplo')?'':'<button class="btn ghost" id="bankreset">Voltar ao exemplo</button>'}</div>
+    <div id="bankmsg"></div>
+  </section>
+  <section class="panel">
+    <div class="row" style="justify-content:space-between"><h2>Zerar</h2></div>
+    <p class="small muted">Apaga histórico de notas, banco de erros, flashcards dominados e a prova em andamento. As questões continuam disponíveis.</p>
+    <div id="resetzone"><button class="btn danger" id="reset">Zerar todo o progresso</button></div>
+  </section>
+  <p class="note">A nota é uma estimativa: a CompTIA usa escala 100–900 com itens ponderados. Aqui o percentual de acerto é ponderado pelo peso de cada domínio no SY0-701 (12/22/18/28/20%) e convertido linearmente para a escala; 800 equivale a cerca de 87,5% de acerto. Seu progresso fica salvo só neste navegador.</p>`;
+
+  app.querySelectorAll('.seg button').forEach(b=>b.onclick=()=>{cfg[b.dataset.k]=b.dataset.v;saveCfg();renderHome()});
+  app.querySelector('#count').onchange=e=>{cfg.count=e.target.value;saveCfg()};
+  app.querySelector('#shuf').onchange=e=>{cfg.shuffle=e.target.checked;saveCfg()};
+  app.querySelector('#onlym').onchange=e=>{cfg.onlyMissed=e.target.checked;saveCfg();renderHome()};
+  app.querySelector('#start').onclick=startQuiz;
+  const r=app.querySelector('#resume'); if(r) r.onclick=()=>go('quiz');
+  const d=app.querySelector('#discard'); if(d) d.onclick=()=>{S.current=null;save();renderHome()};
+  app.querySelector('#bankfile').onchange=e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{let a;try{a=JSON.parse(r.result)}catch(err){app.querySelector('#bankmsg').innerHTML='<p class="small" style="color:var(--bad)">O arquivo não é um JSON válido.</p>';return}
+    if(!validBank(a)){app.querySelector('#bankmsg').innerHTML='<p class="small" style="color:var(--bad)">Formato inválido: cada questão precisa de id, q, o, a, obj e d.</p>';return}
+    try{localStorage.setItem(BANK_KEY,JSON.stringify({name:f.name.replace(/\.json$/i,''),items:a}))}catch(err){}
+    S=blank();save();location.reload()};r.readAsText(f)};
+  const br=app.querySelector('#bankreset'); if(br) br.onclick=()=>{try{localStorage.removeItem(BANK_KEY)}catch(e){};S=blank();save();location.reload()};
+  app.querySelector('#reset').onclick=()=>{
+    app.querySelector('#resetzone').innerHTML=`<div class="confirm"><strong>Zerar todo o progresso?</strong><span class="small">Isso não pode ser desfeito.</span><div class="row"><button class="btn danger" id="yes">Sim, zerar</button><button class="btn" id="no">Cancelar</button></div></div>`;
+    app.querySelector('#yes').onclick=()=>{S=blank();save();toast('Progresso zerado');renderHome()};
+    app.querySelector('#no').onclick=renderHome;
+  };
+}
+
+function gauge(score){
+  const pos=v=>((v-100)/800*100).toFixed(2)+'%';
+  return `<div class="gauge" aria-label="Nota ${score} na escala de 100 a 900">
+    <div class="track"></div><div class="fill" style="width:${pos(score)}"></div>
+    <div class="lbl" style="top:0;left:${pos(PASS)}">750</div>
+    <div class="lbl goal" style="top:0;left:${pos(GOAL)};transform:none;padding-left:4px">meta 800</div>
+    <div class="mk" style="left:${pos(PASS)}"></div><div class="mk goal" style="left:${pos(GOAL)}"></div>
+    ${score>170?'<div class="lbl" style="left:0;transform:none">100</div>':''}
+    ${score<830?'<div class="lbl" style="left:100%;transform:translateX(-100%)">900</div>':''}
+    <div class="lbl" style="left:${pos(score)};color:var(--accent);font-weight:600">você: ${score}</div>
+  </div>`;
+}
+function spark(h){
+  const pts=h.slice(-12), W=600,H=70,pad=8;
+  const x=i=>pad+(W-2*pad)*(pts.length===1?0.5:i/(pts.length-1));
+  const y=v=>H-pad-(H-2*pad)*((v-100)/800);
+  const line=pts.map((p,i)=>`${i?'L':'M'}${x(i).toFixed(1)},${y(p.score).toFixed(1)}`).join('');
+  const area=line+`L${x(pts.length-1).toFixed(1)},${H-pad}L${x(0).toFixed(1)},${H-pad}Z`;
+  const lp=pts[pts.length-1];
+  return `<div><div class="eyebrow" style="margin-bottom:4px">Últimas ${pts.length} notas</div>
+  <svg class="spark" viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" role="img" aria-label="Evolução das notas">
+    <line x1="0" x2="${W}" y1="${y(GOAL)}" y2="${y(GOAL)}" stroke="var(--goal)" stroke-dasharray="4 4" stroke-width="1" vector-effect="non-scaling-stroke"/>
+    <line x1="0" x2="${W}" y1="${y(PASS)}" y2="${y(PASS)}" stroke="var(--ink-3)" stroke-dasharray="2 4" stroke-width="1" vector-effect="non-scaling-stroke"/>
+    <path d="${area}" fill="var(--accent-soft)" stroke="none"/>
+    <path d="${line}" fill="none" stroke="var(--accent)" stroke-width="2" vector-effect="non-scaling-stroke"/>
+    <circle cx="${x(pts.length-1)}" cy="${y(lp.score)}" r="4" fill="var(--accent)"/>
+  </svg></div>`;
+}
+
+/* ---------- QUIZ ---------- */
+function startQuiz(){
+  let p=pool(); if(cfg.shuffle)p=shuffle(p);
+  const n=cfg.count==='all'?p.length:Math.min(p.length,parseInt(cfg.count,10));
+  const ids=p.slice(0,n).map(q=>q.id);
+  S.current={ids,i:0,ans:{},checked:{},flags:{},mode:cfg.mode,start:Date.now(),limit:cfg.mode==='simulado'?ids.length*60:0,showEn:false};
+  save(); go('quiz');
+}
+function renderQuiz(){
+  const C=S.current;
+  if(!C){app.innerHTML=`<section class="panel empty"><h2>Nenhuma prova em andamento</h2><p class="muted">Configure e comece uma prova na tela inicial.</p><button class="btn primary" id="toHome">Ir para o início</button></section>`;app.querySelector('#toHome').onclick=()=>go('home');return}
+  const q=BY[C.ids[C.i]], sel=C.ans[q.id]||[], checked=C.mode==='estudo'&&C.checked[q.id];
+  const answered=Object.keys(C.ans).length, multi=nSelect(q)>1;
+  const shownLetters=Object.keys(q.o);
+  app.innerHTML=`
+  <section class="panel">
+    <div class="qhead">
+      <span class="eyebrow">Questão ${C.i+1} de ${C.ids.length} · ${answered} respondidas</span>
+      <div class="row">${C.limit?`<span class="timer" id="timer">--:--</span>`:''}<button class="btn ghost" id="flag" style="min-height:34px;padding:0 10px">${C.flags[q.id]?'★ Marcada':'☆ Marcar'}</button></div>
+    </div>
+    <div class="progress"><div style="width:${(C.i+1)/C.ids.length*100}%"></div></div>
+    <div class="qtag"><span class="pill mono">${q.pbq?'Prática '+q.id:q.id}</span><span class="pill d${q.d}">Domínio ${q.d}</span>${checked||C.mode==='estudo'?`<span class="pill">${esc(objCode(q.obj))}</span>`:''}${multi?`<span class="selmany">Selecione ${q.a.length}</span>`:''}</div>
+    <p class="qtext">${esc(q.q)}</p>
+    ${C.showEn&&q.en_q?`<p class="en">${esc(q.en_q)}</p>`:''}
+    <div class="choices">${shownLetters.map(L=>{
+      let cls='';
+      if(checked){ if(q.a.includes(L)) cls='right'; else if(sel.includes(L)) cls='wrong'; }
+      return `<button class="choice ${cls}" data-l="${L}" aria-pressed="${sel.includes(L)}" ${checked?'disabled':''}><span class="L">${L}</span><span>${esc(q.o[L])}</span></button>`}).join('')}</div>
+    ${checked?feedbackHTML(q,sel):''}
+    <div class="row" style="justify-content:space-between">
+      <label class="check"><input type="checkbox" id="showen" ${C.showEn?'checked':''}> Mostrar enunciado original em inglês</label>
+      ${C.mode==='estudo'&&!checked?`<button class="btn primary" id="check" ${sel.length===q.a.length?'':'disabled'}>Corrigir</button>`:''}
+    </div>
+    <div class="qnav">
+      <button class="btn" id="prev" ${C.i===0?'disabled':''}>← Anterior</button>
+      ${C.i<C.ids.length-1?`<button class="btn ${C.mode==='simulado'||checked?'primary':''}" id="next">Próxima →</button>`:`<button class="btn primary" id="finish">Finalizar e ver resultado</button>`}
+    </div>
+  </section>
+  <section class="panel">
+    <div class="row" style="justify-content:space-between"><h3>Mapa da prova</h3><button class="btn ghost" id="finish2" style="min-height:34px">Finalizar agora</button></div>
+    <div class="grid-nav">${C.ids.map((id,i)=>{
+      let c=''; if(C.mode==='estudo'&&C.checked[id]) c=isRight(BY[id],C.ans[id])?'r':'w'; else if(C.ans[id]) c='ans';
+      return `<button class="${c} ${C.flags[id]?'flag':''} ${i===C.i?'cur':''}" data-i="${i}" aria-label="Questão ${i+1}">${i+1}</button>`}).join('')}</div>
+    <div id="finzone"></div>
+  </section>`;
+
+  app.querySelectorAll('.choice').forEach(b=>b.onclick=()=>{
+    const L=b.dataset.l; let s=(C.ans[q.id]||[]).slice();
+    if(multi){ if(s.includes(L)) s=s.filter(x=>x!==L); else { if(s.length>=q.a.length) s.shift(); s.push(L);} }
+    else s=[L];
+    C.ans[q.id]=s; save(); renderQuiz();
+  });
+  const ck=app.querySelector('#check'); if(ck) ck.onclick=()=>{C.checked[q.id]=true;save();renderQuiz()};
+  app.querySelector('#showen').onchange=e=>{C.showEn=e.target.checked;save();renderQuiz()};
+  app.querySelector('#flag').onclick=()=>{C.flags[q.id]=!C.flags[q.id];save();renderQuiz()};
+  app.querySelector('#prev').onclick=()=>{C.i--;save();renderQuiz()};
+  const nx=app.querySelector('#next'); if(nx) nx.onclick=()=>{C.i++;save();renderQuiz();window.scrollTo({top:0})};
+  const askFinish=()=>{
+    const left=C.ids.length-Object.keys(C.ans).length;
+    const z=app.querySelector('#finzone');
+    z.innerHTML=`<div class="confirm" style="border-color:var(--accent);background:var(--accent-soft);margin-top:12px"><strong>Finalizar a prova?</strong><span class="small">${left?`${left} questão(ões) sem resposta contarão como erro.`:'Todas as questões foram respondidas.'}</span><div class="row"><button class="btn primary" id="fy">Finalizar</button><button class="btn" id="fn">Voltar</button></div></div>`;
+    z.querySelector('#fy').onclick=finishQuiz; z.querySelector('#fn').onclick=()=>z.innerHTML='';
+    z.scrollIntoView({behavior:'smooth',block:'center'});
+  };
+  const fin=app.querySelector('#finish'); if(fin) fin.onclick=askFinish;
+  app.querySelector('#finish2').onclick=askFinish;
+  app.querySelectorAll('.grid-nav button').forEach(b=>b.onclick=()=>{C.i=+b.dataset.i;save();renderQuiz()});
+  startTimer();
+}
+function feedbackHTML(q,sel){
+  const ok=isRight(q,sel);
+  return `<div class="feedback ${ok?'ok':'bad'}">
+    <div class="verdict">${ok?'Correto.':'Incorreto.'} Resposta: ${q.a.map(L=>`${L}) ${esc(q.o[L])}`).join(' + ')}</div>
+    <p>${esc(q.e)}</p>
+    <ul class="why">${Object.entries(q.w).map(([L,t])=>`<li><b>${L}</b> ${esc(t)}</li>`).join('')}</ul>
+    <span class="note">Objetivo ${esc(q.obj)}</span>
+  </div>`;
+}
+function startTimer(){
+  clearInterval(timerInt);
+  const C=S.current; if(!C||!C.limit) return;
+  const el=()=>document.getElementById('timer');
+  const tick=()=>{
+    const left=C.limit-Math.floor((Date.now()-C.start)/1000);
+    const t=el(); if(!t){clearInterval(timerInt);return}
+    if(left<=0){clearInterval(timerInt);toast('Tempo esgotado');finishQuiz();return}
+    const m=Math.floor(left/60),s=left%60; t.textContent=`${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+    t.classList.toggle('low',left<300);
+  };
+  tick(); timerInt=setInterval(tick,1000);
+}
+function finishQuiz(){
+  clearInterval(timerInt);
+  const C=S.current; if(!C) return;
+  const byDom={}, byObj={}, wrong=[];
+  let c=0;
+  C.ids.forEach(id=>{
+    const q=BY[id], ok=isRight(q,C.ans[id]);
+    byDom[q.d]=byDom[q.d]||{c:0,t:0}; byDom[q.d].t++;
+    if(ok){c++;byDom[q.d].c++; if(S.missed[id]){S.missed[id]=Math.max(0,S.missed[id]-1); if(!S.missed[id]) delete S.missed[id];}}
+    else{wrong.push(id); byObj[q.obj]=byObj[q.obj]||{w:0,ids:[]}; byObj[q.obj].w++; byObj[q.obj].ids.push(id); S.missed[id]=(S.missed[id]||0)+1; delete S.mastered[id];}
+  });
+  const objTotals={}; C.ids.forEach(id=>{const o=BY[id].obj;objTotals[o]=(objTotals[o]||0)+1});
+  const wp=weightedPct(byDom);
+  const res={date:Date.now(),n:C.ids.length,c,raw:c/C.ids.length,wp,score:scaled(wp),byDom,byObj,objTotals,wrong,ans:C.ans,ids:C.ids,mode:C.mode,secs:Math.round((Date.now()-C.start)/1000)};
+  S.history.push({date:res.date,n:res.n,c:res.c,score:res.score,exam:cfg.exam});
+  S.lastResult=res; S.current=null; save(); go('result');
+}
+
+/* ---------- RESULT ---------- */
+const TIPS={
+ '1':'Revise tipos/categorias de controles, tríade CIA, AAA, zero trust (plano de controle x dados), gestão de mudanças e fundamentos de criptografia/PKI.',
+ '2':'Revise agentes de ameaça e motivações, vetores (phishing, smishing, watering hole), tipos de malware, ataques de aplicação (SQLi, XSS, traversal), DNS e senhas, e técnicas de mitigação/hardening.',
+ '3':'Revise modelos de nuvem e responsabilidade compartilhada, segmentação (VLAN, air gap), appliances (WAF, proxy, jump server), estados e proteção de dados (tokenização, mascaramento) e resiliência (UPS, backups, testes de DR).',
+ '4':'Revise resposta a incidentes (ordem das fases), forense (cadeia de custódia, legal hold, hash), leitura de logs (origem → destino), IAM (federação, SSO, MFA, DAC/MAC/RBAC), segurança de e-mail (SPF/DKIM/DMARC) e gestão de vulnerabilidades.',
+ '5':'Revise análise de risco (SLE, ARO, ALE, MTBF/MTTR, RTO/RPO), estratégias de risco, papéis de dados (owner, controller, processor, custodian), tipos de acordo (SLA, SOW, MOA/MOU, NDA), auditorias e pentest (ambientes known/partially known).'
+};
+function renderResult(){
+  const R=S.lastResult;
+  if(!R){app.innerHTML=`<section class="panel empty"><h2>Ainda não há resultado</h2><p class="muted">Finalize uma prova para ver acertos, erros, nota estimada e o que revisar.</p><button class="btn primary" id="toHome">Começar uma prova</button></section>`;app.querySelector('#toHome').onclick=()=>go('home');return}
+  const wrongN=R.n-R.c, okP=pct(R.c,R.n), badP=Math.round((100-okP)*10)/10;
+  const [vc,vt]=verdictFor(R.score);
+  const needed=Math.max(0,Math.ceil((0.875-R.raw)*R.n));
+  const objs=Object.entries(R.byObj).map(([o,v])=>({o,w:v.w,ids:v.ids,t:R.objTotals[o],rate:v.w/R.objTotals[o],pri:v.w/R.objTotals[o]*DOM[o[0]].w*v.w})).sort((a,b)=>b.pri-a.pri||b.w-a.w);
+  const sevOf=x=>x.rate>=.5&&x.w>=2?['hi','Prioridade alta']:x.rate>=.5?['md','Prioridade média']:['lo','Reforçar'];
+  const weakDoms=Object.entries(R.byDom).filter(([d,v])=>v.t&&v.c/v.t<.875).sort((a,b)=>(a[1].c/a[1].t)-(b[1].c/b[1].t));
+  const mm=Math.floor(R.secs/60), ss=R.secs%60;
+  const C=2*Math.PI*58, okLen=C*R.c/R.n;
+  app.innerHTML=`
+  <section class="panel">
+    <div class="scorehead">
+      <svg class="donut" viewBox="0 0 150 150" role="img" aria-label="${okP}% de acerto">
+        <circle cx="75" cy="75" r="58" fill="none" stroke="var(--bad-soft)" stroke-width="16"/>
+        <circle cx="75" cy="75" r="58" fill="none" stroke="var(--ok)" stroke-width="16" stroke-dasharray="${okLen} ${C}" transform="rotate(-90 75 75)" stroke-linecap="butt"/>
+        <text x="75" y="72" text-anchor="middle" font-family="Archivo, sans-serif" font-weight="800" font-size="30" fill="var(--ink)">${okP}%</text>
+        <text x="75" y="94" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="11" fill="var(--ink-3)">de acerto</text>
+      </svg>
+      <div style="display:flex;flex-direction:column;gap:10px;min-width:0">
+        <span class="eyebrow">Resultado · ${new Date(R.date).toLocaleString('pt-BR',{dateStyle:'short',timeStyle:'short'})} · ${R.mode==='simulado'?'Simulado':'Estudo'}</span>
+        <div class="row"><h1 class="mono" style="font-family:var(--f-display)">${R.score}</h1><span class="verdict-tag ${vc}">${vt}</span></div>
+        ${gauge(R.score)}
+      </div>
+    </div>
+    <div class="kv">
+      <div class="stat"><div class="v mono" style="color:var(--ok)">${R.c}</div><div class="k">Acertos (${okP}%)</div></div>
+      <div class="stat"><div class="v mono" style="color:var(--bad)">${wrongN}</div><div class="k">Erros (${badP}%)</div></div>
+      <div class="stat"><div class="v mono">${mm}:${String(ss).padStart(2,'0')}</div><div class="k">Tempo</div></div>
+    </div>
+    <p class="small muted">${R.score>=GOAL?`Você está no ritmo da meta. Continue fazendo provas completas de 90 questões no modo Simulado para confirmar a consistência.`:`Para chegar a 800 neste conjunto, você precisaria de mais ${needed} acerto(s) (cerca de 87,5% de acerto ponderado). Comece pelos tópicos de prioridade alta abaixo.`}</p>
+    <div class="row">
+      <button class="btn primary" id="fcErr" ${wrongN?'':'disabled'}>Estudar erros em flashcards</button>
+      <button class="btn" id="redo" ${wrongN?'':'disabled'}>Refazer só as que errei</button>
+      <button class="btn ghost" id="newq">Nova prova</button>
+    </div>
+  </section>
+
+  <section class="panel">
+    <h2>Desempenho por domínio</h2>
+    <p class="small muted">Linha roxa = 87,5% (equivalente à meta 800). Peso de cada domínio no exame entre parênteses.</p>
+    <div style="display:flex;flex-direction:column;gap:12px">${Object.keys(DOM).map(d=>{
+      const v=R.byDom[d]; if(!v) return `<div class="dom"><span>${d}. ${DOM[d].n} <span class="note">(${Math.round(DOM[d].w*100)}%)</span></span><div class="bar"></div><span class="mono small muted">—</span></div>`;
+      const p=v.c/v.t, col=p>=.875?'var(--ok)':p>=.8125?'var(--warn)':'var(--bad)';
+      return `<div class="dom"><span>${d}. ${DOM[d].n} <span class="note">(${Math.round(DOM[d].w*100)}%)</span></span><div class="bar"><i style="width:${p*100}%;background:${col}"></i><span class="goalline"></span></div><span class="mono small">${v.c}/${v.t}</span></div>`}).join('')}</div>
+  </section>
+
+  <section class="panel">
+    <h2>O que revisar</h2>
+    ${objs.length?`<p class="small muted">Ordenado por prioridade: taxa de erro no tópico × peso do domínio no exame.</p>
+    <div class="review-list">${objs.map(x=>{const [sc,st]=sevOf(x);return `<div class="topic">
+      <div><strong>${esc(objCode(x.o))} · ${esc(objName(x.o))}</strong><div class="small muted">Domínio ${x.o[0]} — ${DOM[x.o[0]].n} · errou ${x.w} de ${x.t}</div></div>
+      <span class="sev ${sc}">${st}</span>
+      <div class="ids">${x.ids.map(id=>`<button class="linkbtn" data-jump="${id}">${id}</button>`).join('')}</div>
+    </div>`}).join('')}</div>
+    ${weakDoms.length?`<div style="display:flex;flex-direction:column;gap:8px;margin-top:6px"><h3>Plano de estudo por domínio</h3>${weakDoms.map(([d,v])=>`<p class="small"><strong>Domínio ${d} (${Math.round(v.c/v.t*100)}%):</strong> ${TIPS[d]}</p>`).join('')}</div>`:''}`
+    :`<p class="muted">Nenhum erro nesta prova. Para validar a meta, faça um Simulado de 90 questões.</p>`}
+  </section>
+
+  ${wrongN?`<section class="panel">
+    <h2>Questões que você errou</h2>
+    <div style="display:flex;flex-direction:column;gap:8px">${R.wrong.map(id=>{const q=BY[id], you=R.ans[id]||[];return `<details class="wq" id="w-${id}">
+      <summary><span class="mono">${id}</span><span>${esc(q.q.length>140?q.q.slice(0,140)+'…':q.q)}</span></summary>
+      <div class="body">
+        <p>${esc(q.q)}</p>
+        <p class="ansline">Sua resposta: <span class="you">${you.length?you.map(L=>`${L}) ${esc(q.o[L])}`).join(' + '):'em branco'}</span></p>
+        <p class="ansline">Correta: <span class="ok">${q.a.map(L=>`${L}) ${esc(q.o[L])}`).join(' + ')}</span></p>
+        <p>${esc(q.e)}</p>
+        <ul class="why">${Object.entries(q.w).map(([L,t])=>`<li><b>${L}</b> ${esc(t)}</li>`).join('')}</ul>
+        <span class="note">Objetivo ${esc(q.obj)}</span>
+      </div></details>`}).join('')}</div>
+  </section>`:''}`;
+
+  const fe=app.querySelector('#fcErr'); if(fe) fe.onclick=()=>{fcState={src:'last',i:0,flip:false,order:null};go('cards')};
+  const rd=app.querySelector('#redo'); if(rd) rd.onclick=()=>{S.current={ids:shuffle(R.wrong),i:0,ans:{},checked:{},flags:{},mode:'estudo',start:Date.now(),limit:0,showEn:false};save();go('quiz')};
+  app.querySelector('#newq').onclick=()=>go('home');
+  app.querySelectorAll('[data-jump]').forEach(b=>b.onclick=()=>{const el=document.getElementById('w-'+b.dataset.jump);if(el){el.open=true;el.scrollIntoView({behavior:'smooth',block:'start'})}});
+}
+
+/* ---------- FLASHCARDS ---------- */
+let fcState={src:'missed',i:0,flip:false,order:null};
+function deckIds(){
+  if(fcState.src==='last'&&S.lastResult) return S.lastResult.wrong.filter(id=>!S.mastered[id]);
+  if(fcState.src==='pbq') return Q.filter(q=>q.pbq).map(q=>q.id).filter(id=>!S.mastered[id]);
+  if(fcState.src==='missed') return Object.keys(S.missed).sort((a,b)=>S.missed[b]-S.missed[a]).filter(id=>!S.mastered[id]);
+  return Q.map(q=>q.id).filter(id=>!S.mastered[id]);
+}
+function renderCards(){
+  let ids=deckIds();
+  if(!fcState.order||fcState.order.src!==fcState.src||fcState.order.len!==ids.length){fcState.order={src:fcState.src,len:ids.length,ids}}
+  ids=fcState.order.ids.filter(id=>!S.mastered[id]);
+  if(fcState.i>=ids.length) fcState.i=0;
+  const lastN=S.lastResult?S.lastResult.wrong.length:0, missN=Object.keys(S.missed).length, masN=Object.keys(S.mastered).length;
+  const head=`<section class="panel">
+    <div class="row" style="justify-content:space-between"><h2>Flashcards</h2><span class="note">${masN} dominado(s)</span></div>
+    <div class="seg" role="group" aria-label="Baralho">
+      <button data-src="last" aria-pressed="${fcState.src==='last'}" ${lastN?'':'disabled'}>Erros da última prova (${lastN})</button>
+      <button data-src="missed" aria-pressed="${fcState.src==='missed'}">Todos os erros (${missN})</button>
+      <button data-src="pbq" aria-pressed="${fcState.src==='pbq'}">Práticas (${Q.filter(q=>q.pbq).length})</button>
+      <button data-src="all" aria-pressed="${fcState.src==='all'}">Todas (${Q.length})</button>
+    </div>
+    <p class="small muted">Toque no card para virar. "Já sei" tira o card do baralho; "Revisar de novo" mantém e manda para o fim da fila.</p>
+  </section>`;
+  if(!ids.length){
+    app.innerHTML=head+`<section class="panel empty"><h2>Baralho vazio</h2><p class="muted">${fcState.src==='all'?'Você marcou todas como dominadas.':'Faça uma prova: cada questão errada vira um flashcard aqui automaticamente.'}</p><div class="row" style="justify-content:center"><button class="btn primary" id="toHome">Fazer uma prova</button>${masN?`<button class="btn" id="unmaster">Devolver os dominados ao baralho</button>`:''}</div></section>`;
+    bindSrc(); app.querySelector('#toHome').onclick=()=>go('home');
+    const um=app.querySelector('#unmaster'); if(um) um.onclick=()=>{S.mastered={};save();renderCards()};
+    return;
+  }
+  const q=BY[ids[fcState.i]];
+  app.innerHTML=head+`
+  <section class="panel">
+    <div class="row" style="justify-content:space-between"><span class="eyebrow">Card ${fcState.i+1} de ${ids.length}</span>${S.missed[q.id]?`<span class="pill" style="color:var(--bad)">errou ${S.missed[q.id]}×</span>`:''}</div>
+    <div class="fc-stage"><div class="card ${fcState.flip?'flip':''}" id="card" tabindex="0" role="button" aria-label="Virar card">
+      <div class="face front">
+        <div class="corner"><span class="pill mono">${q.pbq?'Prática '+q.id:q.id}</span><span class="pill d${q.d}">${esc(objCode(q.obj))} · ${esc(objName(q.obj))}</span></div>
+        <p class="prompt">${esc(q.q)}</p>
+        <div class="small muted">${Object.entries(q.o).map(([L,t])=>`<div><span class="mono">${L})</span> ${esc(t)}</div>`).join('')}</div>
+        <span class="hint">Pense na resposta e toque para virar</span>
+      </div>
+      <div class="face back">
+        <div class="corner"><span class="eyebrow">Resposta</span><span class="pill">${esc(q.obj)}</span></div>
+        <div class="answer">${q.a.map(L=>`${L}) ${esc(q.o[L])}`).join(' + ')}</div>
+        <p>${esc(q.e)}</p>
+        <ul class="why">${Object.entries(q.w).map(([L,t])=>`<li><b>${L}</b> ${esc(t)}</li>`).join('')}</ul>
+      </div>
+    </div></div>
+    <div class="fc-controls">
+      <button class="btn" id="again">↺ Revisar de novo</button>
+      <button class="btn primary" id="know">✓ Já sei</button>
+    </div>
+    <div class="row" style="justify-content:space-between"><button class="btn ghost" id="fprev">← Anterior</button><button class="btn ghost" id="fshuf">Embaralhar</button><button class="btn ghost" id="fnext">Próximo →</button></div>
+  </section>`;
+  bindSrc();
+  const card=app.querySelector('#card');
+  // size card to tallest face
+  const fr=card.querySelector('.front'), bk=card.querySelector('.back');
+  const h=Math.max(340,fr.scrollHeight,bk.scrollHeight); card.style.minHeight=h+'px';
+  const flip=()=>{fcState.flip=!fcState.flip;card.classList.toggle('flip',fcState.flip)};
+  card.onclick=flip; card.onkeydown=e=>{if(e.key===' '||e.key==='Enter'){e.preventDefault();flip()}};
+  app.querySelector('#know').onclick=()=>{S.mastered[q.id]=1;save();fcState.flip=false;renderCards();toast('Card dominado')};
+  app.querySelector('#again').onclick=()=>{const o=fcState.order.ids;const k=o.indexOf(q.id);o.splice(k,1);o.push(q.id);fcState.flip=false;if(fcState.i>=o.filter(id=>!S.mastered[id]).length-1&&o.length>1){} renderCards()};
+  app.querySelector('#fprev').onclick=()=>{fcState.i=(fcState.i-1+ids.length)%ids.length;fcState.flip=false;renderCards()};
+  app.querySelector('#fnext').onclick=()=>{fcState.i=(fcState.i+1)%ids.length;fcState.flip=false;renderCards()};
+  app.querySelector('#fshuf').onclick=()=>{fcState.order.ids=shuffle(fcState.order.ids);fcState.i=0;fcState.flip=false;renderCards()};
+}
+function bindSrc(){app.querySelectorAll('[data-src]').forEach(b=>b.onclick=()=>{fcState={src:b.dataset.src,i:0,flip:false,order:null};renderCards()})}
+
+/* ---------- render ---------- */
+function render(){
+  clearInterval(timerInt); setTabs();
+  if(view==='home') renderHome();
+  else if(view==='quiz') renderQuiz();
+  else if(view==='result') renderResult();
+  else renderCards();
+}
+if(location.hash){const h=location.hash.slice(1);if(['home','quiz','result','cards'].includes(h))view=h}
+else if(S.current) view='home';
+render();
+})();
+</script>
+
+</body></html>
