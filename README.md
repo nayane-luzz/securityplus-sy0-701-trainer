@@ -22,6 +22,20 @@ O app vem com **questões de exemplo originais** (`data/sample-questions.json`).
 
 > Não publique neste repositório questões de materiais protegidos por direitos autorais (livros, cursos pagos, dumps). Mantenha bancos privados fora do Git; o `.gitignore` já ignora a pasta `data/private/`.
 
+## Plano de estudos adaptativo
+
+O arquivo [`plano-security-plus.html`](plano-security-plus.html) é um cronograma que se refaz sozinho até a data da prova:
+
+- distribui os 28 objetivos do SY0-701 em cinco passadas (teoria, questões, revisão em 7 dias, aprofundamento em 14 e revisão final em 21);
+- mostra um painel de viabilidade e o ritmo diário necessário;
+- tem botões "Não estudei hoje" e "Perdi a semana" que replanejam o restante;
+- tem visão de hoje, da semana, mês a mês e um mapa de constância;
+- registra questões e simulados de qualquer plataforma, com índice de acerto por domínio;
+- reserva simulados completos na reta final;
+- exporta e restaura os dados em JSON.
+
+Para ajustar, edite o bloco `CFG` no início do `<script>`: `dataProva`, `capacidade` (minutos por dia, de domingo a sábado) e `metaQuestoesDia`.
+
 ## Formato do banco (JSON)
 
 Um array de questões:

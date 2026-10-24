@@ -1,0 +1,967 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Security+ SY0-701 · Plano adaptativo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --fundo:#EFF2F6;
+  --papel:#FFFFFF;
+  --tinta:#0F1E33;
+  --tinta-fraca:#5A6980;
+  --traco:#D6DDE7;
+  --traco-leve:#E8ECF2;
+  --acento:#1B4D8F;
+  --ok:#17694A;
+  --alerta:#9A5410;
+  --risco:#993126;
+  --sans:"IBM Plex Sans",system-ui,sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--sans);background:var(--fundo);color:var(--tinta);line-height:1.5;-webkit-font-smoothing:antialiased}
+button{font:inherit;color:inherit;background:none;border:none;cursor:pointer}
+input,select{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--acento);outline-offset:2px;border-radius:3px}
+.mono{font-family:var(--mono);font-variant-numeric:tabular-nums}
+
+.app{display:flex;min-height:100vh}
+
+/* lateral */
+.lateral{width:220px;flex:0 0 220px;background:var(--papel);border-right:1px solid var(--traco);position:sticky;top:0;height:100vh;display:flex;flex-direction:column;overflow-y:auto}
+.marca{padding:20px 20px 16px;border-bottom:1px solid var(--traco-leve)}
+.marca-cert{font-size:19px;font-weight:700;letter-spacing:-.02em}
+.marca-cod{font-family:var(--mono);font-size:12px;color:var(--tinta-fraca);margin-top:2px}
+.menu{padding:12px 10px;flex:1}
+.menu a{display:block;padding:8px 12px;border-radius:6px;font-size:14px;color:var(--tinta-fraca);text-decoration:none}
+.menu a:hover{background:var(--fundo);color:var(--tinta)}
+.contagem{margin:10px;padding:14px;border:1px solid var(--traco);border-radius:8px;background:var(--fundo)}
+.contagem-num{font-family:var(--mono);font-size:30px;font-weight:600;line-height:1}
+.contagem-rot{font-size:12px;color:var(--tinta-fraca);margin-top:3px}
+
+.conteudo{flex:1;min-width:0}
+.area{max-width:900px;padding:28px 30px 70px}
+.bloco{margin-bottom:36px;scroll-margin-top:20px}
+.bloco-cabeca{display:flex;align-items:baseline;justify-content:space-between;gap:14px;margin-bottom:12px;flex-wrap:wrap}
+.bloco-titulo{font-size:19px;font-weight:600;letter-spacing:-.01em}
+.bloco-nota{font-size:12.5px;color:var(--tinta-fraca)}
+
+/* topo */
+.topo{display:flex;justify-content:space-between;align-items:flex-start;gap:20px;flex-wrap:wrap;margin-bottom:22px}
+.titulo{font-size:29px;font-weight:700;letter-spacing:-.02em;line-height:1.15}
+.subtitulo{font-size:13.5px;color:var(--tinta-fraca);margin-top:5px}
+.sequencia{text-align:right}
+.seq-num{font-family:var(--mono);font-size:26px;font-weight:600;line-height:1}
+.seq-rot{font-size:12px;color:var(--tinta-fraca)}
+
+/* painel de viabilidade */
+.painel{border:1px solid var(--traco);border-radius:10px;padding:18px 20px;margin-bottom:24px;background:var(--papel)}
+.painel.aperto{border-color:#E3C9A6;background:#FDF7EF}
+.painel.critico{border-color:#E0BDB8;background:#FCF2F0}
+.painel-titulo{font-size:15.5px;font-weight:600;margin-bottom:5px}
+.painel-texto{font-size:14px;color:var(--tinta-fraca);max-width:62ch}
+.painel-acoes{display:flex;gap:9px;margin-top:14px;flex-wrap:wrap}
+.acao{background:var(--tinta);color:#fff;padding:9px 16px;border-radius:6px;font-size:13.5px;font-weight:600}
+.acao:hover{background:#1A3050}
+.acao.fantasma{background:none;color:var(--tinta);border:1px solid var(--traco)}
+.acao.fantasma:hover{background:var(--fundo)}
+.barras-viab{display:flex;gap:2px;height:9px;margin-top:14px;border-radius:3px;overflow:hidden;background:var(--traco-leve)}
+.viab-usado{background:var(--acento)}
+.viab-excedente{background:var(--risco)}
+
+/* hoje */
+.fita{display:flex;gap:2px;height:8px;margin-bottom:12px;border-radius:3px;overflow:hidden}
+.fita-parte{background:var(--traco)}
+.fita-parte.feita{background:var(--ok)}
+.fita-parte.atrasada{background:var(--risco)}
+.sessoes{display:flex;flex-direction:column;gap:7px}
+.sessao{display:flex;align-items:center;gap:13px;width:100%;text-align:left;background:var(--papel);border:1px solid var(--traco);border-radius:8px;padding:13px 15px;transition:border-color .15s}
+.sessao:hover{border-color:#BAC5D4}
+.sessao[data-feita="1"]{background:#FAFBFC;border-color:var(--traco-leve)}
+.sessao[data-orfa="1"]{border-style:dashed;border-color:#D9B6B0}
+.check{width:21px;height:21px;flex:0 0 21px;border-radius:5px;border:1.5px solid var(--traco);display:grid;place-items:center;font-size:12px;color:transparent;transition:.15s}
+.sessao[data-feita="1"] .check{background:var(--ok);border-color:var(--ok);color:#fff}
+.sessao-corpo{flex:1;min-width:0}
+.sessao-topico{font-size:14.5px;font-weight:500;line-height:1.35}
+.sessao[data-feita="1"] .sessao-topico{color:var(--tinta-fraca);text-decoration:line-through;text-decoration-color:var(--traco)}
+.sessao-meta{font-size:12px;color:var(--tinta-fraca);margin-top:2px}
+.etiqueta{font-size:11px;font-weight:600;padding:3px 7px;border-radius:4px;white-space:nowrap}
+.et-teoria{background:#E7EDF6;color:var(--acento)}
+.et-questoes{background:#E6EFEA;color:var(--ok)}
+.et-revisao{background:#F5EBDD;color:var(--alerta)}
+.et-aprof{background:#EAE6F3;color:#4C3E6B}
+.et-revisao2{background:#F5EBDD;color:var(--alerta)}
+.et-simulado{background:#F4E7E5;color:var(--risco)}
+.sessao-min{font-family:var(--mono);font-size:12.5px;color:var(--tinta-fraca);white-space:nowrap}
+.vazio{border:1px dashed var(--traco);border-radius:9px;padding:26px;text-align:center;color:var(--tinta-fraca);font-size:14px}
+
+.meta-dia{display:flex;gap:22px;margin-top:14px;flex-wrap:wrap;font-size:13px;color:var(--tinta-fraca)}
+.meta-dia strong{font-family:var(--mono);color:var(--tinta);font-weight:600}
+
+/* semana */
+.semana{display:flex;gap:7px;align-items:flex-end}
+.dia{flex:1;text-align:center;min-width:0}
+.dia-barra{height:80px;background:var(--traco-leve);border-radius:5px;position:relative;overflow:hidden;display:flex;align-items:flex-end}
+.dia-carga{width:100%;background:#C3CFDF}
+.dia-feito{position:absolute;left:0;right:0;bottom:0;background:var(--ok)}
+.dia.hoje .dia-barra{outline:2px solid var(--tinta);outline-offset:2px}
+.dia-letra{font-size:11.5px;color:var(--tinta-fraca);margin-top:7px}
+.dia-min{font-family:var(--mono);font-size:11px;color:var(--tinta-fraca)}
+
+/* meses */
+.meses{display:flex;flex-direction:column;gap:10px}
+.mes{display:grid;grid-template-columns:92px 1fr auto;gap:4px 12px;align-items:center}
+.mes-nome{font-size:13.5px;font-weight:500}
+.mes-trilho{height:7px;background:var(--traco-leve);border-radius:4px;overflow:hidden;display:flex}
+.mes-feito{background:var(--ok)}
+.mes-plan{background:#C3CFDF}
+.mes-conta{font-family:var(--mono);font-size:12px;color:var(--tinta-fraca);white-space:nowrap}
+
+/* constância */
+.constancia{display:flex;gap:3px;overflow-x:auto;padding-bottom:4px}
+.const-col{display:flex;flex-direction:column;gap:3px}
+.const-cel{width:15px;height:15px;border-radius:3px;background:var(--traco-leve)}
+.const-cel.n1{background:#C8D8EC}.const-cel.n2{background:#8FB0D8}
+.const-cel.n3{background:#4E7CB5}.const-cel.n4{background:var(--acento)}
+.const-cel.futuro{background:transparent;border:1px dashed var(--traco-leve)}
+.const-legenda{display:flex;align-items:center;gap:7px;margin-top:10px;font-size:12px;color:var(--tinta-fraca)}
+
+/* trilhas */
+.dominios{display:flex;flex-direction:column;gap:9px}
+.dominio{background:var(--papel);border:1px solid var(--traco);border-radius:9px;overflow:hidden}
+.dom-cabeca{display:flex;align-items:center;gap:14px;width:100%;padding:14px 17px;text-align:left}
+.dom-cabeca:hover{background:#FAFBFC}
+.dom-peso{font-family:var(--mono);font-size:13px;font-weight:600;color:var(--acento);flex:0 0 34px}
+.dom-corpo{flex:1;min-width:0}
+.dom-nome{font-size:14.5px;font-weight:600;line-height:1.3}
+.dom-trilho{height:5px;background:var(--traco-leve);border-radius:3px;overflow:hidden;margin-top:7px}
+.dom-cheio{height:100%;background:var(--ok);transition:width .3s}
+.dom-conta{font-family:var(--mono);font-size:12px;color:var(--tinta-fraca);white-space:nowrap}
+.dom-seta{color:var(--tinta-fraca);font-size:11px;transition:transform .18s}
+.dominio[aberto] .dom-seta{transform:rotate(90deg)}
+.topicos{list-style:none;border-top:1px solid var(--traco-leve);display:none}
+.dominio[aberto] .topicos{display:block}
+.topico{display:flex;align-items:center;gap:12px;width:100%;padding:10px 17px 10px 20px;text-align:left;border-bottom:1px solid #F2F5F8}
+.topicos li:last-child .topico{border-bottom:none}
+.topico:hover{background:#FAFBFC}
+.top-check{width:17px;height:17px;flex:0 0 17px;border-radius:4px;border:1.5px solid var(--traco);display:grid;place-items:center;font-size:10px;color:transparent;transition:.15s}
+.topico[data-feito="1"] .top-check{background:var(--ok);border-color:var(--ok);color:#fff}
+.top-cod{font-family:var(--mono);font-size:12px;color:var(--tinta-fraca);flex:0 0 30px}
+.top-nome{flex:1;min-width:0;font-size:13.5px}
+.topico[data-feito="1"] .top-nome{color:var(--tinta-fraca)}
+.top-passos{font-family:var(--mono);font-size:11px;color:var(--tinta-fraca);white-space:nowrap}
+
+/* desempenho */
+.form{background:var(--papel);border:1px solid var(--traco);border-radius:9px;padding:16px 18px;margin-bottom:16px}
+.form-linha{display:flex;gap:10px;flex-wrap:wrap;align-items:flex-end}
+.campo{display:flex;flex-direction:column;gap:4px}
+.campo label{font-size:11.5px;color:var(--tinta-fraca)}
+.campo input,.campo select{border:1px solid var(--traco);border-radius:6px;padding:7px 9px;font-size:13.5px;background:#fff;min-width:0}
+.campo input[type=number]{width:78px;font-family:var(--mono)}
+.campo.largo{flex:1;min-width:150px}
+.tabela{width:100%;border-collapse:collapse;background:var(--papel);border:1px solid var(--traco);border-radius:9px;overflow:hidden;font-size:13.5px}
+.tabela th{text-align:left;font-size:11.5px;font-weight:600;color:var(--tinta-fraca);padding:10px 14px;border-bottom:1px solid var(--traco);background:#FAFBFC}
+.tabela td{padding:10px 14px;border-bottom:1px solid var(--traco-leve)}
+.tabela tr:last-child td{border-bottom:none}
+.tabela td.n{font-family:var(--mono);text-align:right;font-variant-numeric:tabular-nums}
+.pct{font-weight:600}
+.pct.bom{color:var(--ok)}.pct.medio{color:var(--alerta)}.pct.ruim{color:var(--risco)}
+.mini{font-size:12px;color:var(--tinta-fraca)}
+.remover{color:var(--tinta-fraca);font-size:15px;line-height:1}
+.remover:hover{color:var(--risco)}
+
+/* metas */
+.metas{display:grid;grid-template-columns:repeat(auto-fit,minmax(215px,1fr));gap:12px}
+.meta{background:var(--papel);border:1px solid var(--traco);border-radius:9px;padding:16px 18px}
+.meta-rot{font-size:12px;color:var(--tinta-fraca)}
+.meta-val{font-family:var(--mono);font-size:24px;font-weight:600;line-height:1.15;margin:5px 0 3px}
+.meta-desc{font-size:12.5px;color:var(--tinta-fraca);line-height:1.45}
+.meta-trilho{height:5px;background:var(--traco-leve);border-radius:3px;overflow:hidden;margin-top:9px}
+.meta-cheio{height:100%;background:var(--acento)}
+
+.rodape{border-top:1px solid var(--traco);padding-top:16px;display:flex;gap:9px;flex-wrap:wrap;align-items:center}
+.rodape-nota{font-size:12px;color:var(--tinta-fraca);flex:1;min-width:200px}
+
+@media (max-width:840px){
+  .lateral{display:none}
+  .area{padding:20px 15px 60px}
+  .titulo{font-size:24px}
+  .tabela{font-size:12.5px}
+  .tabela th,.tabela td{padding:8px 10px}
+  .mes{grid-template-columns:78px 1fr}
+  .mes-conta{grid-column:2}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<div class="app">
+
+<aside class="lateral">
+  <div class="marca">
+    <p class="marca-cert">Security+</p>
+    <p class="marca-cod">SY0-701</p>
+  </div>
+  <nav class="menu">
+    <a href="#hoje">Hoje</a>
+    <a href="#semana">Semana</a>
+    <a href="#meses">Meses</a>
+    <a href="#constancia">Constância</a>
+    <a href="#trilhas">Domínios</a>
+    <a href="#desempenho">Desempenho</a>
+    <a href="#metas">Metas</a>
+  </nav>
+  <div class="contagem">
+    <p class="contagem-num mono" id="lat-dias"></p>
+    <p class="contagem-rot">dias até a prova<br><span id="lat-data"></span></p>
+  </div>
+</aside>
+
+<div class="conteudo"><div class="area">
+
+  <header class="topo">
+    <div>
+      <h1 class="titulo">CompTIA Security+</h1>
+      <p class="subtitulo" id="subtitulo"></p>
+    </div>
+    <div class="sequencia">
+      <p class="seq-num mono" id="seq-num"></p>
+      <p class="seq-rot">dias seguidos</p>
+    </div>
+  </header>
+
+  <section id="painel"></section>
+
+  <section class="bloco" id="hoje">
+    <div class="bloco-cabeca">
+      <h2 class="bloco-titulo">Hoje</h2>
+      <p class="bloco-nota" id="hoje-nota"></p>
+    </div>
+    <div class="fita" id="fita"></div>
+    <div class="sessoes" id="sessoes"></div>
+    <div class="meta-dia" id="meta-dia"></div>
+  </section>
+
+  <section class="bloco" id="semana">
+    <div class="bloco-cabeca">
+      <h2 class="bloco-titulo">Esta semana</h2>
+      <p class="bloco-nota">barra clara é o planejado, escura é o cumprido</p>
+    </div>
+    <div class="semana" id="semana-barras"></div>
+  </section>
+
+  <section class="bloco" id="meses">
+    <div class="bloco-cabeca">
+      <h2 class="bloco-titulo">Mês a mês</h2>
+      <p class="bloco-nota">como o conteúdo se distribui até a prova</p>
+    </div>
+    <div class="meses" id="meses-lista"></div>
+  </section>
+
+  <section class="bloco" id="constancia">
+    <div class="bloco-cabeca">
+      <h2 class="bloco-titulo">Constância</h2>
+      <p class="bloco-nota" id="const-nota"></p>
+    </div>
+    <div class="constancia" id="const-grade"></div>
+    <div class="const-legenda">
+      <span>menos</span>
+      <span class="const-cel"></span><span class="const-cel n1"></span>
+      <span class="const-cel n2"></span><span class="const-cel n3"></span>
+      <span class="const-cel n4"></span>
+      <span>mais</span>
+    </div>
+  </section>
+
+  <section class="bloco" id="trilhas">
+    <div class="bloco-cabeca">
+      <h2 class="bloco-titulo">Domínios do exame</h2>
+      <p class="bloco-nota">o número à esquerda é o peso oficial na prova</p>
+    </div>
+    <div class="dominios" id="dominios"></div>
+  </section>
+
+  <section class="bloco" id="desempenho">
+    <div class="bloco-cabeca">
+      <h2 class="bloco-titulo">Questões e simulados</h2>
+      <p class="bloco-nota">lançamento manual — qualquer plataforma</p>
+    </div>
+    <div class="form">
+      <div class="form-linha">
+        <div class="campo"><label for="r-data">Data</label><input type="date" id="r-data"></div>
+        <div class="campo largo"><label for="r-dom">Domínio</label><select id="r-dom"></select></div>
+        <div class="campo"><label for="r-plat">Plataforma</label><input type="text" id="r-plat" placeholder="Dion, Meyers…" style="width:130px"></div>
+        <div class="campo"><label for="r-total">Questões</label><input type="number" id="r-total" min="1" value="20"></div>
+        <div class="campo"><label for="r-acertos">Acertos</label><input type="number" id="r-acertos" min="0" value="14"></div>
+        <div class="campo"><label for="r-min">Minutos</label><input type="number" id="r-min" min="0" value="30"></div>
+        <button class="acao" id="r-add">Lançar</button>
+      </div>
+    </div>
+    <table class="tabela">
+      <thead><tr><th>Domínio</th><th style="text-align:right">Questões</th><th style="text-align:right">Acertos</th><th style="text-align:right">Índice</th></tr></thead>
+      <tbody id="tab-dom"></tbody>
+    </table>
+    <p class="mini" style="margin:16px 0 8px">Lançamentos recentes</p>
+    <table class="tabela">
+      <thead><tr><th>Data</th><th>Domínio</th><th>Origem</th><th style="text-align:right">Resultado</th><th></th></tr></thead>
+      <tbody id="tab-reg"></tbody>
+    </table>
+  </section>
+
+  <section class="bloco" id="metas">
+    <div class="bloco-cabeca"><h2 class="bloco-titulo">Metas</h2></div>
+    <div class="metas" id="metas-grade"></div>
+  </section>
+
+  <footer class="rodape">
+    <p class="rodape-nota" id="rodape-nota"></p>
+    <button class="acao fantasma" id="btn-exportar">Baixar meus dados</button>
+    <button class="acao fantasma" id="btn-importar">Restaurar de arquivo</button>
+    <input type="file" id="arquivo" accept=".json" hidden>
+  </footer>
+
+</div></div>
+</div>
+
+<script>
+/* ============================================================
+   1. CONFIGURAÇÃO — ajuste aqui
+   ============================================================ */
+const CFG = {
+  exame: "SY0-701",
+  dataProva: "2027-01-12",
+  reservaFinal: 10,                                 // últimos dias só para simulados e revisão livre
+  capacidade: [90, 90, 90, 90, 90, 90, 150],        // dom..sáb, minutos disponíveis por dia
+  espalhar: true,                                   // distribui o conteúdo por toda a janela em vez de concentrar no início
+  metaQuestoesDia: 25,
+  intervaloRevisao: 7,                              // dias entre a teoria e a 1ª revisão
+  intervaloAprofundamento: 14,                      // dias entre a teoria e o aprofundamento
+  intervaloRevisao2: 21,                            // dias entre a teoria e a 2ª revisão
+  simulados: 4
+};
+
+/* As cinco passadas sobre cada objetivo. A ordem aqui é a ordem de prioridade. */
+const PASSADAS = [
+  { tipo:"teoria",   rot:"Teoria",          min:45, intervalo:null },
+  { tipo:"questoes", rot:"Questões",        min:25, intervalo:null },
+  { tipo:"revisao",  rot:"Revisão",         min:20, intervalo:"intervaloRevisao" },
+  { tipo:"aprof",    rot:"Aprofundamento",  min:35, intervalo:"intervaloAprofundamento" },
+  { tipo:"revisao2", rot:"Revisão final",   min:25, intervalo:"intervaloRevisao2" }
+];
+
+/* Objetivos oficiais do SY0-701, com o peso de cada domínio */
+const DOMINIOS = [
+  { id:"D1", nome:"Conceitos gerais de segurança", peso:12, topicos:[
+    ["1.1","Tipos de controles: técnicos, gerenciais, operacionais e físicos"],
+    ["1.2","Conceitos fundamentais: CIA, AAA, Zero Trust, gap analysis, honeypots"],
+    ["1.3","Gestão de mudanças e seu impacto na segurança"],
+    ["1.4","Soluções criptográficas: PKI, TPM, HSM, hashing, salting, assinatura digital"]
+  ]},
+  { id:"D2", nome:"Ameaças, vulnerabilidades e mitigações", peso:22, topicos:[
+    ["2.1","Atores de ameaça e suas motivações"],
+    ["2.2","Vetores de ameaça e superfícies de ataque"],
+    ["2.3","Tipos de vulnerabilidades: aplicação, SO, hardware, nuvem, supply chain"],
+    ["2.4","Análise de indicadores de atividade maliciosa"],
+    ["2.5","Técnicas de mitigação no ambiente corporativo"]
+  ]},
+  { id:"D3", nome:"Arquitetura de segurança", peso:18, topicos:[
+    ["3.1","Modelos de arquitetura: nuvem, IaC, serverless, microsserviços, IoT, SCADA"],
+    ["3.2","Segurança da infraestrutura: segmentação, IPS/IDS, firewalls, VPN, SASE"],
+    ["3.3","Proteção de dados: classificação, DLP, criptografia, tokenização, mascaramento"],
+    ["3.4","Resiliência e recuperação: alta disponibilidade, backup, sítios alternativos"]
+  ]},
+  { id:"D4", nome:"Operações de segurança", peso:28, topicos:[
+    ["4.1","Hardening de recursos computacionais, mobile e wireless"],
+    ["4.2","Gestão de ativos de hardware, software e dados"],
+    ["4.3","Gestão de vulnerabilidades: varredura, análise, priorização, remediação"],
+    ["4.4","Alerta e monitoramento: SIEM, SNMP, NetFlow, agregação de logs"],
+    ["4.5","Ajuste de capacidades: firewall, IDS/IPS, web filter, DLP, EDR/XDR"],
+    ["4.6","Gestão de identidade e acesso: SSO, federação, MFA, provisionamento, PAM"],
+    ["4.7","Automação e orquestração das operações seguras"],
+    ["4.8","Resposta a incidentes: preparação, contenção, erradicação, lições aprendidas"],
+    ["4.9","Fontes de dados para investigação: logs, dashboards, pacotes, vulnerability scans"]
+  ]},
+  { id:"D5", nome:"Gestão e governança do programa", peso:20, topicos:[
+    ["5.1","Governança: políticas, padrões, procedimentos, papéis e responsabilidades"],
+    ["5.2","Gestão de risco: identificação, análise, apetite, tratamento, BIA"],
+    ["5.3","Risco de terceiros: due diligence, contratos, SLA, MOU, acordos de fornecimento"],
+    ["5.4","Conformidade: relatórios, consequências, privacidade, atestação"],
+    ["5.5","Auditorias e avaliações: interna, externa, pentest, atestação"],
+    ["5.6","Conscientização de usuários: phishing, comportamento anômalo, treinamento"]
+  ]}
+];
+/* ============================================================ */
+
+/* ---------- armazenamento tolerante a falha ---------- */
+const CHAVE = "secplus-sy0701-v1";
+let memoria = null;
+function carregar(){
+  try{ const b = localStorage.getItem(CHAVE); if(b) return JSON.parse(b); }catch(e){}
+  return memoria;
+}
+function salvar(d){
+  memoria = d;
+  try{ localStorage.setItem(CHAVE, JSON.stringify(d)); }catch(e){}
+}
+
+/* ---------- datas ---------- */
+const DIA_MS = 86400000;
+function hoje(){ const d = new Date(); d.setHours(0,0,0,0); return d; }
+function dt(s){ const [a,m,d] = s.split("-").map(Number); return new Date(a, m-1, d); }
+function mais(d, n){ const x = new Date(d); x.setDate(x.getDate()+n); x.setHours(0,0,0,0); return x; }
+function k(d){ return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`; }
+function difDias(a,b){ return Math.round((b-a)/DIA_MS); }
+const LETRA = ["D","S","T","Q","Q","S","S"];
+const MES_NOME = ["janeiro","fevereiro","março","abril","maio","junho","julho","agosto","setembro","outubro","novembro","dezembro"];
+
+/* ---------- estado ---------- */
+const PROVA = dt(CFG.dataProva);
+const PASSADA = Object.fromEntries(PASSADAS.map(p => [p.tipo, p]));
+let estado = carregar() || { topicos:{}, atividades:[], registros:[], diario:{}, provaRef:null, planoRef:null, ultimoPlano:null };
+
+/* Assinatura da estrutura do plano: muda quando as passadas mudam, e aí o plano é refeito. */
+const PLANO_REF = PASSADAS.map(p => `${p.tipo}:${p.min}`).join("|") + `/${CFG.simulados}`;
+
+/* Cada objetivo gera uma atividade por passada. Criadas uma vez; o alocador só remarca datas. */
+function semear(){
+  const existentes = new Set(estado.atividades.map(a => `${a.cod}|${a.tipo}`));
+  let id = estado.atividades.reduce((m,a) => Math.max(m, a.id), 0) + 1;
+
+  DOMINIOS.forEach(dom => {
+    dom.topicos.forEach(([cod, nome]) => {
+      if (!(cod in estado.topicos)) estado.topicos[cod] = false;
+      PASSADAS.forEach(p => {
+        if (existentes.has(`${cod}|${p.tipo}`)) return;
+        estado.atividades.push({
+          id:id++, cod, dom:dom.id, nome, tipo:p.tipo, min:p.min,
+          data:null, feita:estado.topicos[cod] === true
+        });
+      });
+    });
+  });
+
+  const jaSim = estado.atividades.filter(a => a.tipo === "simulado").length;
+  for (let i = jaSim + 1; i <= CFG.simulados; i++){
+    estado.atividades.push({ id:id++, cod:"SIM", dom:"—", nome:`Simulado completo ${i} (90 questões)`, tipo:"simulado", min:100, data:null, feita:false });
+  }
+}
+
+/* ---------- ALOCADOR: gera e regenera o cronograma ---------- */
+function planejar(){
+  const h = hoje();
+  const ultimoEstudo = mais(PROVA, -CFG.reservaFinal);
+  const pendentes = estado.atividades.filter(a => !a.feita);
+
+  const ordemTipo = Object.fromEntries(PASSADAS.map((p,i) => [p.tipo, i]));
+  ordemTipo.simulado = PASSADAS.length;
+  const pesoDe = id => (DOMINIOS.find(d => d.id === id)?.peso ?? 0);
+  pendentes.sort((a,b) =>
+    (ordemTipo[a.tipo] - ordemTipo[b.tipo]) ||
+    (pesoDe(b.dom) - pesoDe(a.dom)) ||
+    a.cod.localeCompare(b.cod)
+  );
+
+  const ocupacao = {};
+  estado.atividades.filter(a => a.feita && a.data).forEach(a => {
+    ocupacao[a.data] = (ocupacao[a.data] || 0) + a.min;
+  });
+
+  /* Ritmo alvo: quando a janela é folgada, o teto diário cai para o que a janela
+     realmente exige, de modo que o conteúdo se espalhe em vez de acabar em novembro.
+     Se a folga é curta, o fator volta a 1 e o alocador usa a capacidade cheia. */
+  const diasJanela = Math.max(1, difDias(h, ultimoEstudo) + 1);
+  let capacidadeTotal = 0;
+  for (let d = 0; d < diasJanela; d++) capacidadeTotal += CFG.capacidade[mais(h,d).getDay()];
+  const necessario = pendentes.filter(a => a.tipo !== "simulado").reduce((t,a) => t + a.min, 0);
+  const fator = CFG.espalhar ? Math.min(1, (necessario / Math.max(1, capacidadeTotal)) * 1.15) : 1;
+  const menorBloco = Math.min(...PASSADAS.map(p => p.min));
+  const tetoAlvo = dia => Math.max(menorBloco, Math.round(CFG.capacidade[dia.getDay()] * fator));
+  const tetoCheio = dia => CFG.capacidade[dia.getDay()];
+
+  const teoriaEm = {};
+  let naoCoube = 0;
+
+  /* Simulados espalhados pela reserva final, o último 2 dias antes da prova */
+  const simulados = pendentes.filter(a => a.tipo === "simulado");
+  const primeiro = Math.max(2, CFG.reservaFinal - 1), ultimo = 2;
+  simulados.forEach((a, i) => {
+    const frac = simulados.length > 1 ? i / (simulados.length - 1) : 0;
+    const antes = Math.round(primeiro - frac * (primeiro - ultimo));
+    const d = mais(PROVA, -antes);
+    a.data = k(d < h ? h : d);
+    ocupacao[a.data] = (ocupacao[a.data] || 0) + a.min;
+  });
+
+  for (const at of pendentes){
+    if (at.tipo === "simulado") continue;
+
+    /* uma passada só entra depois da teoria do mesmo objetivo, com o intervalo da passada */
+    let inicio = h;
+    const chaveInt = PASSADA[at.tipo]?.intervalo;
+    if (chaveInt && teoriaEm[at.cod]){
+      const alvo = mais(dt(teoriaEm[at.cod]), CFG[chaveInt]);
+      if (alvo > inicio) inicio = alvo;
+    }
+
+    /* 1ª tentativa respeita o ritmo alvo; a 2ª usa a capacidade cheia */
+    let alocada = false;
+    for (const teto of [tetoAlvo, tetoCheio]){
+      for (let d = difDias(h, inicio); d <= difDias(h, ultimoEstudo); d++){
+        const dia = mais(h, d), chave = k(dia);
+        if ((ocupacao[chave] || 0) + at.min <= teto(dia)){
+          at.data = chave;
+          ocupacao[chave] = (ocupacao[chave] || 0) + at.min;
+          if (at.tipo === "teoria") teoriaEm[at.cod] = chave;
+          alocada = true;
+          break;
+        }
+      }
+      if (alocada) break;
+    }
+    if (!alocada){ at.data = null; naoCoube++; }
+  }
+
+  estado.ultimoPlano = k(h);
+  estado.provaRef = CFG.dataProva;
+  estado.planoRef = PLANO_REF;
+  salvar(estado);
+  return naoCoube;
+}
+
+/* ---------- viabilidade ---------- */
+function semData(){ return estado.atividades.filter(a => !a.feita && !a.data && a.tipo !== "simulado"); }
+function viabilidade(){
+  const h = hoje();
+  const ultimo = mais(PROVA, -CFG.reservaFinal);
+  const dias = Math.max(1, difDias(h, ultimo) + 1);
+  let capacidade = 0;
+  for (let d = 0; d < dias; d++) capacidade += CFG.capacidade[mais(h,d).getDay()];
+  const necessario = estado.atividades.filter(a => !a.feita && a.tipo !== "simulado").reduce((t,a) => t + a.min, 0);
+  return {
+    capacidade, necessario, dias, ultimo,
+    folga: capacidade - necessario,
+    ritmo: Math.round(necessario / dias),
+    extraDia: Math.ceil(Math.max(0, necessario - capacidade) / dias),
+    semPlano: semData().length
+  };
+}
+
+/* ---------- consultas ---------- */
+const doDia = ch => estado.atividades.filter(a => a.data === ch);
+function atrasadas(){
+  const h = k(hoje());
+  return estado.atividades.filter(a => !a.feita && a.data && a.data < h);
+}
+function minutosDoDia(ch){
+  const s = estado.atividades.filter(a => a.data === ch && a.feita).reduce((t,a) => t + a.min, 0);
+  const q = estado.registros.filter(r => r.data === ch).reduce((t,r) => t + (r.min||0), 0);
+  return s + q;
+}
+function sequencia(){
+  let n = 0;
+  for (let i = 0; i < 400; i++){
+    const d = k(mais(hoje(), -i));
+    if (minutosDoDia(d) > 0) n++;
+    else if (i > 0) break;
+  }
+  return n;
+}
+function coberturaTopicos(){
+  const todos = Object.keys(estado.topicos);
+  return { feitos: todos.filter(c => estado.topicos[c]).length, total: todos.length };
+}
+function passosDoTopico(cod){
+  const as = estado.atividades.filter(a => a.cod === cod);
+  return { feitos: as.filter(a => a.feita).length, total: as.length };
+}
+
+/* ============================================================
+   RENDER
+   ============================================================ */
+const $ = q => document.querySelector(q);
+const ROT = Object.fromEntries(PASSADAS.map(p => [p.tipo, p.rot]));
+ROT.simulado = "Simulado";
+
+function rTopo(){
+  const faltam = difDias(hoje(), PROVA);
+  $("#lat-dias").textContent = faltam;
+  $("#lat-data").textContent = PROVA.toLocaleDateString("pt-BR");
+  const cob = coberturaTopicos();
+  $("#subtitulo").textContent =
+    `${CFG.exame} · prova em ${PROVA.toLocaleDateString("pt-BR")} · ${faltam} dias · ${cob.feitos}/${cob.total} objetivos concluídos`;
+  $("#seq-num").textContent = sequencia();
+}
+
+function rPainel(){
+  const v = viabilidade();
+  const atr = atrasadas();
+  const el = $("#painel");
+  const classe = (v.folga < 0 || v.semPlano) ? "critico" : (v.folga < v.capacidade * 0.1 ? "aperto" : "");
+
+  let titulo, texto;
+  if (v.semPlano){
+    const quais = [...new Set(semData().map(a => a.dom))].sort().join(", ");
+    titulo = `${v.semPlano} ${v.semPlano === 1 ? "atividade ficou" : "atividades ficaram"} sem data`;
+    texto = `Não há espaço livre entre hoje e ${v.ultimo.toLocaleDateString("pt-BR")} para encaixar tudo na capacidade atual. ` +
+            `São atividades de ${quais}, listadas no fim do bloco de hoje para você não perdê-las de vista. ` +
+            `Para resolver: suba a capacidade diária em CFG, reduza a reserva final de ${CFG.reservaFinal} dias, ou marque como feitos os objetivos que você já domina.`;
+  } else if (v.folga < 0){
+    titulo = `Faltam ${Math.abs(v.folga)} min de capacidade até a reta final`;
+    texto = `O conteúdo restante não cabe no ritmo atual. São ${v.extraDia} min a mais por dia, ou corte de passadas nos domínios de menor peso. A reserva de ${CFG.reservaFinal} dias antes da prova está preservada para simulados.`;
+  } else if (atr.length){
+    const m = atr.reduce((t,a) => t + a.min, 0);
+    titulo = `${atr.length} ${atr.length===1?"atividade atrasada":"atividades atrasadas"} · ${m} min`;
+    texto = `Refazer o cronograma redistribui tudo a partir de hoje. O ritmo necessário sobe para ${v.ritmo} min/dia, dentro da sua capacidade, então cabe sem cortar matéria.`;
+  } else {
+    titulo = `Plano viável · ritmo de ${v.ritmo} min/dia`;
+    texto = `Restam ${v.necessario} min de conteúdo distribuídos em ${v.dias} dias, até ${v.ultimo.toLocaleDateString("pt-BR")}. ` +
+            `Sua capacidade declarada soma ${v.capacidade} min, então há ${v.folga} min de folga para imprevistos — ` +
+            `o alocador usa essa folga para espalhar as revisões em vez de concentrar tudo agora.`;
+  }
+
+  const usado = Math.min(100, (v.necessario / Math.max(1, v.capacidade)) * 100);
+  const excede = v.folga < 0 ? Math.min(60, (Math.abs(v.folga) / v.capacidade) * 100) : 0;
+
+  el.innerHTML = `
+    <div class="painel ${classe}">
+      <p class="painel-titulo">${titulo}</p>
+      <p class="painel-texto">${texto}</p>
+      <div class="barras-viab">
+        <span class="viab-usado" style="flex:${usado}"></span>
+        <span style="flex:${Math.max(0,100-usado)}"></span>
+        ${excede ? `<span class="viab-excedente" style="flex:${excede}"></span>` : ""}
+      </div>
+      <div class="painel-acoes">
+        <button class="acao" id="btn-plan">Refazer o cronograma</button>
+        <button class="acao fantasma" id="btn-pular">Não estudei hoje</button>
+        <button class="acao fantasma" id="btn-semana">Perdi a semana</button>
+      </div>
+    </div>`;
+
+  $("#btn-plan").onclick = () => { planejar(); desenhar(); };
+  $("#btn-pular").onclick = () => {
+    const ch = k(hoje());
+    doDia(ch).filter(a => !a.feita).forEach(a => a.data = k(mais(hoje(), 1)));
+    planejar(); desenhar();
+  };
+  $("#btn-semana").onclick = () => {
+    for (let i = 0; i < 7; i++){
+      const ch = k(mais(hoje(), i));
+      doDia(ch).filter(a => !a.feita).forEach(a => a.data = k(mais(hoje(), 7)));
+    }
+    planejar(); desenhar();
+  };
+}
+
+function rHoje(){
+  const ch = k(hoje());
+  const orfas = semData();
+  const lista = doDia(ch).concat(atrasadas()).concat(orfas);
+  const cap = CFG.capacidade[hoje().getDay()];
+  const plan = lista.reduce((t,a) => t + a.min, 0);
+  const feito = lista.filter(a => a.feita).reduce((t,a) => t + a.min, 0);
+
+  $("#hoje-nota").textContent = `${feito} de ${plan} min planejados · capacidade ${cap} min`;
+  $("#fita").innerHTML = lista.map(a => {
+    const atr = !a.feita && a.data && a.data < ch;
+    return `<span class="fita-parte ${a.feita?"feita":atr?"atrasada":""}" style="flex:${a.min}" title="${a.nome}"></span>`;
+  }).join("");
+
+  $("#sessoes").innerHTML = lista.length ? lista.map(a => {
+    const atr = !a.feita && a.data && a.data < ch;
+    const orfa = !a.data;
+    const meta = [a.cod !== "SIM" ? `${a.cod} · ${DOMINIOS.find(d=>d.id===a.dom)?.nome ?? ""}` : "Reta final",
+                  atr ? `atrasada desde ${dt(a.data).toLocaleDateString("pt-BR",{day:"2-digit",month:"2-digit"})}` : null,
+                  orfa ? "sem espaço no cronograma" : null]
+                 .filter(Boolean).join(" · ");
+    return `
+      <button class="sessao" data-feita="${a.feita?1:0}" data-orfa="${orfa?1:0}" data-id="${a.id}">
+        <span class="check">✓</span>
+        <span class="sessao-corpo">
+          <span class="sessao-topico" style="display:block">${a.nome}</span>
+          <span class="sessao-meta">${meta}</span>
+        </span>
+        <span class="etiqueta et-${a.tipo}">${ROT[a.tipo]}</span>
+        <span class="sessao-min mono">${a.min}m</span>
+      </button>`;
+  }).join("") : `<div class="vazio">Nada agendado para hoje. Use o tempo para questões livres do domínio 4, que é o de maior peso.</div>`;
+
+  const qHoje = estado.registros.filter(r => r.data === ch);
+  const qTot = qHoje.reduce((t,r) => t + r.total, 0);
+  const qAc = qHoje.reduce((t,r) => t + r.acertos, 0);
+  $("#meta-dia").innerHTML = `
+    <span>Minutos: <strong>${minutosDoDia(ch)}</strong> / ${cap}</span>
+    <span>Questões: <strong>${qTot}</strong> / ${CFG.metaQuestoesDia}</span>
+    <span>Acertos hoje: <strong>${qTot ? Math.round(qAc/qTot*100) : 0}%</strong></span>`;
+}
+
+function rSemana(){
+  const inicio = mais(hoje(), -hoje().getDay());
+  let maior = 1;
+  const dados = [...Array(7)].map((_, i) => {
+    const d = mais(inicio, i), ch = k(d);
+    const plan = doDia(ch).reduce((t,a) => t + a.min, 0);
+    const feito = minutosDoDia(ch);
+    maior = Math.max(maior, plan, feito);
+    return { d, ch, plan, feito, i };
+  });
+  $("#semana-barras").innerHTML = dados.map(x => `
+    <div class="dia ${x.ch === k(hoje()) ? "hoje" : ""}">
+      <div class="dia-barra">
+        <div class="dia-carga" style="height:${x.plan/maior*100}%"></div>
+        <div class="dia-feito" style="height:${x.feito/maior*100}%"></div>
+      </div>
+      <div class="dia-letra">${LETRA[x.i]}</div>
+      <div class="dia-min mono">${x.plan || x.feito ? (x.feito || x.plan) : "—"}</div>
+    </div>`).join("");
+}
+
+function rMeses(){
+  const mapa = {};
+  estado.atividades.filter(a => a.data).forEach(a => {
+    const m = a.data.slice(0,7);
+    mapa[m] = mapa[m] || { plan:0, feito:0 };
+    mapa[m].plan += a.min;
+    if (a.feita) mapa[m].feito += a.min;
+  });
+  const chaves = Object.keys(mapa).sort();
+  if (!chaves.length){ $("#meses-lista").innerHTML = `<div class="vazio">Nada planejado ainda.</div>`; return; }
+  const maior = Math.max(...chaves.map(c => mapa[c].plan));
+
+  $("#meses-lista").innerHTML = chaves.map(c => {
+    const [ano, mes] = c.split("-").map(Number);
+    const d = mapa[c];
+    const largura = d.plan / maior * 100;
+    const fracFeito = d.plan ? d.feito / d.plan : 0;
+    return `
+      <div class="mes">
+        <span class="mes-nome">${MES_NOME[mes-1]} ${String(ano).slice(2)}</span>
+        <span class="mes-trilho" style="width:${largura}%;min-width:3%">
+          <span class="mes-feito" style="flex:${fracFeito}"></span>
+          <span class="mes-plan" style="flex:${1-fracFeito}"></span>
+        </span>
+        <span class="mes-conta">${Math.round(d.feito/60*10)/10}h / ${Math.round(d.plan/60*10)/10}h</span>
+      </div>`;
+  }).join("");
+}
+
+function rConstancia(){
+  const h = hoje();
+  const fim = mais(h, 6 - h.getDay());
+  const semanas = 14;
+  const inicio = mais(fim, -(semanas*7 - 1));
+  let cols = "", diasAtivos = 0, totalMin = 0;
+
+  for (let s = 0; s < semanas; s++){
+    let cel = "";
+    for (let d = 0; d < 7; d++){
+      const dia = mais(inicio, s*7 + d), ch = k(dia);
+      const min = minutosDoDia(ch);
+      if (min > 0){ diasAtivos++; totalMin += min; }
+      const n = dia > h ? "futuro" : min === 0 ? "" : min < 45 ? "n1" : min < 90 ? "n2" : min < 150 ? "n3" : "n4";
+      cel += `<span class="const-cel ${n}" title="${dia.toLocaleDateString("pt-BR")} · ${min} min"></span>`;
+    }
+    cols += `<div class="const-col">${cel}</div>`;
+  }
+  $("#const-grade").innerHTML = cols;
+  $("#const-nota").textContent = `${diasAtivos} dias com estudo · ${Math.round(totalMin/60)}h no período`;
+}
+
+function rDominios(){
+  const abertos = [...document.querySelectorAll(".dominio[aberto]")].map(e => e.dataset.id);
+  $("#dominios").innerHTML = DOMINIOS.map(dom => {
+    const feitos = dom.topicos.filter(([c]) => estado.topicos[c]).length;
+    const pct = Math.round(feitos / dom.topicos.length * 100);
+    return `
+      <section class="dominio" data-id="${dom.id}" ${abertos.includes(dom.id) ? "aberto" : ""}>
+        <button class="dom-cabeca">
+          <span class="dom-peso mono">${dom.peso}%</span>
+          <span class="dom-corpo">
+            <span class="dom-nome" style="display:block">${dom.nome}</span>
+            <span class="dom-trilho"><span class="dom-cheio" style="width:${pct}%"></span></span>
+          </span>
+          <span class="dom-conta mono">${feitos}/${dom.topicos.length}</span>
+          <span class="dom-seta">▶</span>
+        </button>
+        <ul class="topicos">
+          ${dom.topicos.map(([cod,nome]) => {
+            const p = passosDoTopico(cod);
+            return `
+            <li><button class="topico" data-feito="${estado.topicos[cod]?1:0}" data-cod="${cod}">
+              <span class="top-check">✓</span>
+              <span class="top-cod mono">${cod}</span>
+              <span class="top-nome">${nome}</span>
+              <span class="top-passos">${p.feitos}/${p.total}</span>
+            </button></li>`;
+          }).join("")}
+        </ul>
+      </section>`;
+  }).join("");
+}
+
+function rDesempenho(){
+  const sel = $("#r-dom");
+  if (!sel.options.length){
+    sel.innerHTML = DOMINIOS.map(d => `<option value="${d.id}">${d.id} · ${d.nome}</option>`).join("")
+      + `<option value="MIX">Simulado misto</option>`;
+  }
+
+  const linhas = DOMINIOS.map(d => {
+    const rs = estado.registros.filter(r => r.dom === d.id);
+    const t = rs.reduce((x,r) => x + r.total, 0), a = rs.reduce((x,r) => x + r.acertos, 0);
+    const p = t ? a/t*100 : null;
+    const cls = p === null ? "" : p >= 80 ? "bom" : p >= 65 ? "medio" : "ruim";
+    return `<tr>
+      <td>${d.id} · ${d.nome} <span class="mini">(${d.peso}%)</span></td>
+      <td class="n">${t || "—"}</td><td class="n">${t ? a : "—"}</td>
+      <td class="n"><span class="pct ${cls}">${t ? p.toFixed(1)+"%" : "—"}</span></td>
+    </tr>`;
+  }).join("");
+
+  const tt = estado.registros.reduce((x,r) => x + r.total, 0);
+  const ta = estado.registros.reduce((x,r) => x + r.acertos, 0);
+  const tp = tt ? ta/tt*100 : 0;
+  $("#tab-dom").innerHTML = linhas + `<tr style="background:#FAFBFC;font-weight:600">
+    <td>Geral</td><td class="n">${tt}</td><td class="n">${ta}</td>
+    <td class="n"><span class="pct ${tp>=80?"bom":tp>=65?"medio":"ruim"}">${tt ? tp.toFixed(1)+"%" : "—"}</span></td></tr>`;
+
+  const recentes = [...estado.registros].sort((a,b) => b.data.localeCompare(a.data)).slice(0, 12);
+  $("#tab-reg").innerHTML = recentes.length ? recentes.map(r => `
+    <tr>
+      <td class="mono">${dt(r.data).toLocaleDateString("pt-BR",{day:"2-digit",month:"2-digit"})}</td>
+      <td>${r.dom}</td><td class="mini">${r.plataforma || "—"}</td>
+      <td class="n">${r.acertos}/${r.total} · ${(r.acertos/r.total*100).toFixed(0)}%</td>
+      <td style="text-align:right"><button class="remover" data-rem="${r.id}" aria-label="Remover lançamento">×</button></td>
+    </tr>`).join("")
+    : `<tr><td colspan="5" class="mini" style="padding:18px;text-align:center">Nenhum lançamento ainda.</td></tr>`;
+}
+
+function rMetas(){
+  const h = hoje(), ch = k(h);
+  const cap = CFG.capacidade[h.getDay()];
+  const minHoje = minutosDoDia(ch);
+  const qHoje = estado.registros.filter(r => r.data === ch).reduce((t,r) => t + r.total, 0);
+  const planHoje = doDia(ch).reduce((t,a) => t + a.min, 0) || cap;
+
+  const inicioSem = mais(h, -h.getDay());
+  let semPlan = 0, semFeito = 0;
+  for (let i = 0; i < 7; i++){
+    const c = k(mais(inicioSem, i));
+    semPlan += doDia(c).reduce((t,a) => t + a.min, 0);
+    semFeito += minutosDoDia(c);
+  }
+
+  const cob = coberturaTopicos();
+  const cobPct = Math.round(cob.feitos / cob.total * 100);
+  const limite = mais(PROVA, -CFG.reservaFinal);
+  const passos = estado.atividades.filter(a => a.tipo !== "simulado");
+  const passosFeitos = passos.filter(a => a.feita).length;
+  const totalMin = estado.registros.reduce((t,r) => t + (r.min||0), 0) +
+                   estado.atividades.filter(a => a.feita).reduce((t,a) => t + a.min, 0);
+
+  const cartao = (rot, val, desc, pct) => `
+    <div class="meta">
+      <p class="meta-rot">${rot}</p>
+      <p class="meta-val mono">${val}</p>
+      <p class="meta-desc">${desc}</p>
+      ${pct != null ? `<span class="meta-trilho"><span class="meta-cheio" style="width:${Math.min(100,pct)}%"></span></span>` : ""}
+    </div>`;
+
+  $("#metas-grade").innerHTML =
+    cartao("Meta diária de tempo", `${minHoje}/${planHoje} min`, "O planejado do dia, não a capacidade cheia — fechar isso já põe o plano em dia.", minHoje/planHoje*100) +
+    cartao("Meta diária de questões", `${qHoje}/${CFG.metaQuestoesDia}`, "Lance no bloco de desempenho, de qualquer plataforma.", qHoje/CFG.metaQuestoesDia*100) +
+    cartao("Semana", `${semFeito}/${semPlan} min`, "Ritmo da semana corrente contra o planejado.", semPlan ? semFeito/semPlan*100 : 0) +
+    cartao("Cobertura do exame", `${cobPct}%`, `${cob.feitos} de ${cob.total} objetivos fechados nas cinco passadas. Alvo: 100% até ${limite.toLocaleDateString("pt-BR")}.`, cobPct) +
+    cartao("Passadas concluídas", `${passosFeitos}/${passos.length}`, "Teoria, questões, revisão, aprofundamento e revisão final de cada objetivo.", passosFeitos/passos.length*100) +
+    cartao("Horas acumuladas", `${Math.round(totalMin/60)}h`, "Soma de atividades concluídas e tempo lançado em questões.", null);
+
+  $("#rodape-nota").textContent =
+    `Os dados ficam salvos neste navegador. Baixe uma cópia de vez em quando para não depender só disso.`;
+}
+
+/* ---------- eventos ---------- */
+document.addEventListener("click", e => {
+  const dc = e.target.closest(".dom-cabeca");
+  if (dc){ dc.closest(".dominio").toggleAttribute("aberto"); return; }
+
+  const tp = e.target.closest(".topico");
+  if (tp){
+    const cod = tp.dataset.cod;
+    estado.topicos[cod] = !estado.topicos[cod];
+    estado.atividades.filter(a => a.cod === cod).forEach(a => a.feita = estado.topicos[cod]);
+    salvar(estado); planejar(); desenhar(); return;
+  }
+
+  const ss = e.target.closest(".sessao");
+  if (ss){
+    const at = estado.atividades.find(a => a.id === Number(ss.dataset.id));
+    at.feita = !at.feita;
+    if (at.feita && !at.data) at.data = k(hoje());
+    const irmas = estado.atividades.filter(a => a.cod === at.cod && a.tipo !== "simulado");
+    if (irmas.length) estado.topicos[at.cod] = irmas.every(a => a.feita);
+    salvar(estado); desenhar(); return;
+  }
+
+  const rm = e.target.closest("[data-rem]");
+  if (rm){
+    estado.registros = estado.registros.filter(r => r.id !== Number(rm.dataset.rem));
+    salvar(estado); desenhar();
+  }
+});
+
+$("#r-add").onclick = () => {
+  const total = Number($("#r-total").value), acertos = Number($("#r-acertos").value);
+  if (!total || acertos > total){ alert("Confira: acertos não pode passar do total de questões."); return; }
+  estado.registros.push({
+    id: Date.now(),
+    data: $("#r-data").value || k(hoje()),
+    dom: $("#r-dom").value,
+    plataforma: $("#r-plat").value.trim(),
+    total, acertos,
+    min: Number($("#r-min").value) || 0
+  });
+  salvar(estado); desenhar();
+};
+
+$("#btn-exportar").onclick = () => {
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(new Blob([JSON.stringify(estado)], { type:"application/json" }));
+  a.download = `secplus-${k(hoje())}.json`;
+  a.click();
+};
+$("#btn-importar").onclick = () => $("#arquivo").click();
+$("#arquivo").onchange = e => {
+  const f = e.target.files[0]; if (!f) return;
+  const r = new FileReader();
+  r.onload = () => {
+    try{
+      estado = JSON.parse(r.result);
+      estado.topicos = estado.topicos || {};
+      estado.atividades = estado.atividades || [];
+      estado.registros = estado.registros || [];
+      semear();
+      planejar();
+      desenhar();
+    }catch(x){ alert("Arquivo inválido."); }
+  };
+  r.readAsText(f);
+};
+
+function desenhar(){
+  rTopo(); rPainel(); rHoje(); rSemana(); rMeses(); rConstancia(); rDominios(); rDesempenho(); rMetas();
+}
+
+semear();
+/* replaneja quando a data da prova muda, quando a estrutura de passadas muda,
+   quando nada foi planejado ainda, ou quando sobrou atividade sem data */
+if (estado.provaRef !== CFG.dataProva || estado.planoRef !== PLANO_REF ||
+    !estado.ultimoPlano || estado.atividades.some(a => !a.feita && !a.data)) planejar();
+$("#r-data").value = k(hoje());
+desenhar();
+</script>
+</body>
+</html>
